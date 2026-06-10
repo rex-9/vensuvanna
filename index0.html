@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paṭicca-Samuppāda — Dependent Origination</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header id="site-header">
+    <div class="header-inner">
+      <div class="header-title">
+        <span class="pali-title">Paṭicca-Samuppāda</span>
+        <span class="en-title">Dependent Origination</span>
+        <span class="vi-title">Duyên Khởi</span>
+      </div>
+      <div class="header-controls">
+        <button id="btn-toggle" class="ctrl-btn" title="Switch lifecycle view">
+          <span class="toggle-icon">🌱</span>
+          <span id="toggle-label">Switch to Human</span>
+        </button>
+        <button id="btn-reset" class="ctrl-btn" title="Restart from beginning">
+          <span>↺</span> Reset
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Sky ── -->
+  <div id="sky-layer">
+    <div class="sun"></div>
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+    <div class="stars-wrap" id="stars-wrap"></div>
+  </div>
+
+  <!-- ── Main scroll container ── -->
+  <main id="scroll-main">
+
+    <!-- ========== PLANT LIFECYCLE ========== -->
+    <div id="view-plant" class="lifecycle-view active">
+
+      <!-- Stage 0: AVIJJĀ / TANHĀ / SAṄKHĀRA — Soil -->
+      <section class="stage" id="plant-0" data-index="0">
+        <div class="scene-3d">
+          <div class="soil-block">
+            <div class="soil-surface"></div>
+            <div class="soil-body">
+              <div class="water-vein w1"></div>
+              <div class="water-vein w2"></div>
+              <div class="water-vein w3"></div>
+              <div class="seed-obj">
+                <div class="seed-shell"></div>
+                <div class="seed-inner"></div>
+              </div>
+            </div>
+            <div class="soil-label-overlay">
+              <span class="elem-badge avijja">Avijjā</span>
+              <span class="elem-badge tanha-water">Taṇhā</span>
+              <span class="elem-badge kamma">Saṅkhāra / Kamma</span>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">01</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Avijjā · Taṇhā · Saṅkhāra</span>
+            <span class="lbl-en">Ignorance · Craving · Volitional Formation</span>
+            <span class="lbl-vi">Vô Minh · Ái · Hành</span>
+          </div>
+          <p class="stage-desc" id="plant-0-desc"></p>
+        </div>
+      </section>
+
+      <!-- Stage 1: VIÑÑĀNA — Sprout -->
+      <section class="stage" id="plant-1" data-index="1">
+        <div class="scene-3d">
+          <div class="soil-thin"></div>
+          <div class="sprout-obj">
+            <div class="sprout-stem"></div>
+            <div class="sprout-tip"></div>
+            <div class="sprout-glow"></div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">02</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Viññāṇa</span>
+            <span class="lbl-en">Consciousness</span>
+            <span class="lbl-vi">Thức</span>
+          </div>
+          <p class="stage-desc" id="plant-1-desc"></p>
+        </div>
+      </section>
+
+      <!-- Stage 2: NĀMA-RŪPA — Two Shoots -->
+      <section class="stage" id="plant-2" data-index="2">
+        <div class="scene-3d">
+          <div class="soil-thin"></div>
+          <div class="two-shoots-obj">
+            <div class="shoot-stem center-stem"></div>
+            <div class="shoot-branch left-branch">
+              <div class="shoot-leaf leaf-l"></div>
+            </div>
+            <div class="shoot-branch right-branch">
+              <div class="shoot-leaf leaf-r"></div>
+            </div>
+            <div class="shoot-label-l">Rūpa</div>
+            <div class="shoot-label-r">Nāma</div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">03</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Nāma-Rūpa</span>
+            <span class="lbl-en">Mind & Matter</span>
+            <span class="lbl-vi">Danh & Sắc</span>
+          </div>
+          <p class="stage-desc" id="plant-2-desc"></p>
+        </div>
+      </section>
+
+      <!-- Stage 3: SAḶĀYATANA — Branches -->
+      <section class="stage" id="plant-3" data-index="3">
+        <div class="scene-3d">
+          <div class="soil-thin"></div>
+          <div class="salayatana-obj">
+            <div class="sal-trunk"></div>
+            <div class="sal-branches">
+              <div class="sal-branch b1"><div class="sal-node"></div><span>👁</span></div>
+              <div class="sal-branch b2"><div class="sal-node"></div><span>👂</span></div>
+              <div class="sal-branch b3"><div class="sal-node"></div><span>👃</span></div>
+              <div class="sal-branch b4"><div class="sal-node"></div><span>👅</span></div>
+              <div class="sal-branch b5"><div class="sal-node"></div><span>🖐</span></div>
+              <div class="sal-branch b6"><div class="sal-node"></div><span>🧠</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">04</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Saḷāyatana</span>
+            <span class="lbl-en">Six Sense Bases</span>
+            <span class="lbl-vi">Sáu Xứ</span>
+          </div>
+          <p class="stage-desc" id="plant-3-desc"></p>
+        </div>
+      </section>
+
+      <!-- Stage 4: PHASSA — Bud -->
+      <section class="stage" id="plant-4" data-index="4">
+        <div class="scene-3d">
+          <div class="soil-thin"></div>
+          <div class="phassa-plant">
+            <div class="phassa-stem"></div>
+            <div class="bud-obj">
+              <div class="bud-outer"></div>
+              <div class="bud-inner"></div>
+              <div class="bud-glow"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">05</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Phassa</span>
+            <span class="lbl-en">Contact</span>
+            <span class="lbl-vi">Xúc</span>
+          </div>
+          <p class="stage-desc" id="plant-4-desc"></p>
+        </div>
+      </section>
+
+      <!-- Stage 5: VEDANĀ — Bloomed Flower -->
+      <section class="stage" id="plant-5" data-index="5">
+        <div class="scene-3d">
+          <div class="soil-thin"></div>
+          <div class="flower-plant">
+            <div class="flower-stem"></div>
+            <div class="flower-obj">
+              <div class="petal p1"></div>
+              <div class="petal p2"></div>
+              <div class="petal p3"></div>
+              <div class="petal p4"></div>
+              <div class="petal p5"></div>
+              <div class="petal p6"></div>
+              <div class="flower-center"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">06</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Vedanā</span>
+            <span class="lbl-en">Feeling / Sensation</span>
+            <span class="lbl-vi">Thọ</span>
+          </div>
+          <p class="stage-desc" id="plant-5-desc"></p>
+        </div>
+      </section>
+
+      <!-- Stage 6: TANHĀ — Young Fruit -->
+      <section class="stage" id="plant-6" data-index="6">
+        <div class="scene-3d">
+          <div class="soil-thin"></div>
+          <div class="fruit-plant young">
+            <div class="fruit-stem-tall"></div>
+            <div class="young-fruit-obj">
+              <div class="young-fruit-body"></div>
+              <div class="young-fruit-shine"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">07</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Taṇhā</span>
+            <span class="lbl-en">Craving</span>
+            <span class="lbl-vi">Ái</span>
+          </div>
+          <p class="stage-desc" id="plant-6-desc"></p>
+        </div>
+      </section>
+
+      <!-- Stage 7: UPĀDĀNA — Mature Fruit -->
+      <section class="stage" id="plant-7" data-index="7">
+        <div class="scene-3d">
+          <div class="soil-thin"></div>
+          <div class="fruit-plant mature">
+            <div class="fruit-stem-tall"></div>
+            <div class="mature-fruit-obj">
+              <div class="mature-fruit-body"></div>
+              <div class="mature-fruit-shine"></div>
+              <div class="mature-fruit-glow"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">08</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Upādāna</span>
+            <span class="lbl-en">Clinging / Attachment</span>
+            <span class="lbl-vi">Thủ</span>
+          </div>
+          <p class="stage-desc" id="plant-7-desc"></p>
+        </div>
+      </section>
+
+      <!-- Stage 8: BHAVA — Seed inside fruit -->
+      <section class="stage" id="plant-8" data-index="8">
+        <div class="scene-3d">
+          <div class="soil-thin"></div>
+          <div class="bhava-plant">
+            <div class="fruit-stem-tall"></div>
+            <div class="bhava-fruit-cut">
+              <div class="fruit-half left-half"></div>
+              <div class="fruit-half right-half"></div>
+              <div class="inner-seed-obj">
+                <div class="inner-seed-shell"></div>
+                <div class="inner-seed-glow"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">09</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Bhava</span>
+            <span class="lbl-en">Becoming / Existence</span>
+            <span class="lbl-vi">Hữu</span>
+          </div>
+          <p class="stage-desc" id="plant-8-desc"></p>
+        </div>
+      </section>
+
+      <!-- Stage 9: JĀTI / JARĀ-MARAṆA — Seed falls, cycle restarts -->
+      <section class="stage" id="plant-9" data-index="9">
+        <div class="scene-3d cycle-end">
+          <div class="soil-block-end">
+            <div class="soil-surface-end"></div>
+            <div class="soil-body-end">
+              <div class="water-vein w1"></div>
+              <div class="water-vein w2"></div>
+            </div>
+          </div>
+          <div class="falling-seed-obj" id="falling-seed">
+            <div class="seed-shell"></div>
+            <div class="seed-trail"></div>
+          </div>
+          <div class="cycle-arrow">↻</div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">10</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Jāti · Jarā-Maraṇa</span>
+            <span class="lbl-en">Birth · Aging & Death</span>
+            <span class="lbl-vi">Sinh · Lão Tử</span>
+          </div>
+          <p class="stage-desc" id="plant-9-desc"></p>
+        </div>
+      </section>
+
+    </div><!-- /view-plant -->
+
+    <!-- ========== HUMAN LIFECYCLE ========== -->
+    <div id="view-human" class="lifecycle-view">
+
+      <!-- H0: AVIJJĀ / TANHĀ / KAMMA — Conditions -->
+      <section class="stage" id="human-0" data-index="0">
+        <div class="scene-3d human-scene">
+          <div class="kamma-cloud">
+            <div class="kamma-orb k1"></div>
+            <div class="kamma-orb k2"></div>
+            <div class="kamma-orb k3"></div>
+            <div class="kamma-label">Kamma Seeds</div>
+          </div>
+          <div class="mind-stream">
+            <div class="ms-wave"></div>
+            <div class="ms-particle p1"></div>
+            <div class="ms-particle p2"></div>
+            <div class="ms-particle p3"></div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">01</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Avijjā · Taṇhā · Saṅkhāra</span>
+            <span class="lbl-en">Ignorance · Craving · Kamma</span>
+            <span class="lbl-vi">Vô Minh · Ái · Nghiệp</span>
+          </div>
+          <p class="stage-desc" id="human-0-desc"></p>
+        </div>
+      </section>
+
+      <!-- H1: PAṬISANDHI — Conception -->
+      <section class="stage" id="human-1" data-index="1">
+        <div class="scene-3d human-scene">
+          <div class="womb-obj">
+            <div class="womb-body"></div>
+            <div class="womb-glow"></div>
+            <div class="embryo-obj">
+              <div class="embryo-body"></div>
+              <div class="embryo-pulse"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">02</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Paṭisandhi · Viññāṇa</span>
+            <span class="lbl-en">Re-linking Consciousness · Conception</span>
+            <span class="lbl-vi">Kiết Sinh Thức · Thụ Thai</span>
+          </div>
+          <p class="stage-desc" id="human-1-desc"></p>
+        </div>
+      </section>
+
+      <!-- H2: NĀMA-RŪPA — Fetus develops -->
+      <section class="stage" id="human-2" data-index="2">
+        <div class="scene-3d human-scene">
+          <div class="fetus-obj">
+            <div class="fetus-body"></div>
+            <div class="fetus-head"></div>
+            <div class="fetus-limb arm-l"></div>
+            <div class="fetus-limb arm-r"></div>
+            <div class="fetus-aura"></div>
+            <div class="fetus-label-l nama-label">Nāma<br><small>Mind</small></div>
+            <div class="fetus-label-r rupa-label">Rūpa<br><small>Form</small></div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">03</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Nāma-Rūpa</span>
+            <span class="lbl-en">Mind & Form Develop</span>
+            <span class="lbl-vi">Danh Sắc Phát Triển</span>
+          </div>
+          <p class="stage-desc" id="human-2-desc"></p>
+        </div>
+      </section>
+
+      <!-- H3: SAḶĀYATANA — Sense organs form -->
+      <section class="stage" id="human-3" data-index="3">
+        <div class="scene-3d human-scene">
+          <div class="baby-sense-obj">
+            <div class="baby-head-3d">
+              <div class="sense-dot eye-l" title="eye">👁</div>
+              <div class="sense-dot eye-r" title="eye">👁</div>
+              <div class="sense-dot ear-l" title="ear">👂</div>
+              <div class="sense-dot ear-r" title="ear">👂</div>
+              <div class="sense-dot nose" title="nose">👃</div>
+              <div class="sense-dot mouth" title="tongue">👅</div>
+              <div class="sense-dot mind-dot" title="mind">✦</div>
+            </div>
+            <div class="baby-body-tiny"></div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">04</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Saḷāyatana</span>
+            <span class="lbl-en">Six Senses Form</span>
+            <span class="lbl-vi">Sáu Căn Hình Thành</span>
+          </div>
+          <p class="stage-desc" id="human-3-desc"></p>
+        </div>
+      </section>
+
+      <!-- H4: PHASSA — Birth / First Contact -->
+      <section class="stage" id="human-4" data-index="4">
+        <div class="scene-3d human-scene">
+          <div class="birth-scene">
+            <div class="newborn-obj">
+              <div class="nb-body"></div>
+              <div class="nb-head"></div>
+              <div class="nb-aura birth-flash"></div>
+            </div>
+            <div class="light-rays">
+              <div class="ray r1"></div>
+              <div class="ray r2"></div>
+              <div class="ray r3"></div>
+              <div class="ray r4"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">05</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Phassa</span>
+            <span class="lbl-en">Contact · Birth into World</span>
+            <span class="lbl-vi">Xúc · Chào Đời</span>
+          </div>
+          <p class="stage-desc" id="human-4-desc"></p>
+        </div>
+      </section>
+
+      <!-- H5: VEDANĀ — Child experiencing -->
+      <section class="stage" id="human-5" data-index="5">
+        <div class="scene-3d human-scene">
+          <div class="child-obj">
+            <div class="child-body"></div>
+            <div class="child-head"></div>
+            <div class="feeling-orbs">
+              <div class="feeling-orb pleasant">😊</div>
+              <div class="feeling-orb unpleasant">😟</div>
+              <div class="feeling-orb neutral">😐</div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">06</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Vedanā</span>
+            <span class="lbl-en">Feeling Tones</span>
+            <span class="lbl-vi">Thọ</span>
+          </div>
+          <p class="stage-desc" id="human-5-desc"></p>
+        </div>
+      </section>
+
+      <!-- H6: TANHĀ — Young adult craving -->
+      <section class="stage" id="human-6" data-index="6">
+        <div class="scene-3d human-scene">
+          <div class="young-adult-obj">
+            <div class="ya-body"></div>
+            <div class="ya-head"></div>
+            <div class="craving-flames">
+              <div class="flame f1"></div>
+              <div class="flame f2"></div>
+              <div class="flame f3"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">07</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Taṇhā</span>
+            <span class="lbl-en">Craving Arises</span>
+            <span class="lbl-vi">Ái Sinh Khởi</span>
+          </div>
+          <p class="stage-desc" id="human-6-desc"></p>
+        </div>
+      </section>
+
+      <!-- H7: UPĀDĀNA — Adult clinging -->
+      <section class="stage" id="human-7" data-index="7">
+        <div class="scene-3d human-scene">
+          <div class="adult-obj">
+            <div class="adult-body"></div>
+            <div class="adult-head"></div>
+            <div class="chains-obj">
+              <div class="chain c1"></div>
+              <div class="chain c2"></div>
+              <div class="chain c3"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">08</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Upādāna</span>
+            <span class="lbl-en">Clinging / Grasping</span>
+            <span class="lbl-vi">Thủ</span>
+          </div>
+          <p class="stage-desc" id="human-7-desc"></p>
+        </div>
+      </section>
+
+      <!-- H8: BHAVA — Mature, making kamma -->
+      <section class="stage" id="human-8" data-index="8">
+        <div class="scene-3d human-scene">
+          <div class="mature-human-obj">
+            <div class="mh-body"></div>
+            <div class="mh-head"></div>
+            <div class="kamma-seeds-emit">
+              <div class="k-seed ks1"></div>
+              <div class="k-seed ks2"></div>
+              <div class="k-seed ks3"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">09</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Bhava</span>
+            <span class="lbl-en">Becoming · Kamma-Making</span>
+            <span class="lbl-vi">Hữu · Tạo Nghiệp</span>
+          </div>
+          <p class="stage-desc" id="human-8-desc"></p>
+        </div>
+      </section>
+
+      <!-- H9: JĀTI / JARĀ-MARAṆA — Old age, death -->
+      <section class="stage" id="human-9" data-index="9">
+        <div class="scene-3d human-scene">
+          <div class="elderly-obj">
+            <div class="old-body"></div>
+            <div class="old-head"></div>
+            <div class="old-stick"></div>
+          </div>
+          <div class="death-transition">
+            <div class="dt-wave"></div>
+            <div class="rebirth-light"></div>
+          </div>
+          <div class="cycle-arrow human-cycle">↻</div>
+        </div>
+        <div class="stage-info">
+          <div class="stage-number">10</div>
+          <div class="label-trio">
+            <span class="lbl-pali">Jāti · Jarā-Maraṇa</span>
+            <span class="lbl-en">Birth · Aging & Death</span>
+            <span class="lbl-vi">Sinh · Lão Tử</span>
+          </div>
+          <p class="stage-desc" id="human-9-desc"></p>
+        </div>
+      </section>
+
+    </div><!-- /view-human -->
+
+  </main>
+
+  <!-- ── Ground / Soil strip ── -->
+  <div id="ground-layer">
+    <div class="ground-surface"></div>
+    <div class="ground-body">
+      <div class="root r1"></div>
+      <div class="root r2"></div>
+      <div class="root r3"></div>
+    </div>
+  </div>
+
+  <!-- ── Progress dots ── -->
+  <nav id="stage-nav" aria-label="Stage navigation">
+    <div id="nav-dots"></div>
+  </nav>
+
+  <!-- ── Scroll hint ── -->
+  <div id="scroll-hint">
+    <span>Scroll to journey</span>
+    <div class="scroll-arrow">↑</div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
