@@ -341,46 +341,6 @@
     "human18.png"
   ];
 
-  // ----- OPTIONAL: captions for each slide (auto-mapped to each image) -----
-  // Plant captions (should ideally match plantImageUrls length)
-  const plantCaptions = [
-    "Avijjā · Taṇhā · Saṅkhāra — The Conditions",
-    "Viññāṇa — Consciousness Sprouts",
-    "Nāma-Rūpa — Mind & Matter",
-    "Saḷāyatana — Six Sense Bases",
-    "Phassa — Contact (Bud)",
-    "Vedanā — Feeling (Flower)",
-    "Taṇhā — Craving (Green Fruit)",
-    "Upādāna — Clinging (Ripe Fruit)",
-    "Bhava — Becoming (Seed Inside)",
-    "Jāti — Birth",
-    "Jarā-Maraṇa — Aging & Death",
-    "Saṃsāra — The Wheel Continues",
-    "Nirodha — Cessation & The Path"
-  ];
-
-  // Human captions (should ideally match humanImageUrls length)
-  const humanCaptions = [
-    "Avijjā · Taṇhā · Saṅkhāra — Human Roots",
-    "Paṭisandhi Viññāṇa — Re-linking Consciousness",
-    "Nāma-Rūpa — Mind & Form in Womb",
-    "Saḷāyatana — Six Sense Organs Mature",
-    "Phassa — Birth & First Contact",
-    "Vedanā — Feeling Tones Through Life",
-    "Taṇhā — Craving Arises in Youth",
-    "Upādāna — Clinging & Grasping",
-    "Bhava — Becoming & Kamma Accumulation",
-    "Jāti — Birth into New Existence",
-    "Jarā-Maraṇa — Aging, Death",
-    "Saṃsāra — Human Cycle Continues",
-    "Rebirth Linking — Next Life",
-    "Kamma Seeds — Future Condition",
-    "Mind Moments — Causal Flow",
-    "Sense Doors — Worldly Experience",
-    "Craving & Clinging — Deepening",
-    "Liberation Possible — Nibbāna"
-  ];
-
   // ============================================================
   // AUTO-CALCULATE SLIDE COUNTS (NO HARDCODE)
   // ============================================================
@@ -390,17 +350,6 @@
 
   // Build full image URL array (plant then human)
   const allImageUrls = [...plantImageUrls, ...humanImageUrls];
-
-  // Build captions array (plant + human, fallback to generic if lengths mismatch)
-  const allCaptions = [];
-  for (let i = 0; i < totalPlantSlides; i++) {
-    if (i < plantCaptions.length) allCaptions.push(plantCaptions[i]);
-    else allCaptions.push(`Plant Slide ${i+1}`);
-  }
-  for (let i = 0; i < totalHumanSlides; i++) {
-    if (i < humanCaptions.length) allCaptions.push(humanCaptions[i]);
-    else allCaptions.push(`Human Slide ${i+1}`);
-  }
 
   // ========== DOM elements ==========
   const container = document.getElementById("slideshowContainer");
@@ -428,7 +377,6 @@
       frame.className = "image-frame";
       const img = document.createElement("img");
       img.src = allImageUrls[i];
-      img.alt = allCaptions[i] || `Slide ${i+1}`;
       img.loading = "eager";
       // handle image loading errors gracefully
       img.onerror = function() {
@@ -438,13 +386,6 @@
       frame.appendChild(img);
       slide.appendChild(frame);
 
-      // add caption if exists
-      if (allCaptions[i] && allCaptions[i].trim() !== "") {
-        const cap = document.createElement("div");
-        cap.className = "slide-caption";
-        cap.innerText = allCaptions[i];
-        slide.appendChild(cap);
-      }
       container.appendChild(slide);
     }
     updateCounter();
