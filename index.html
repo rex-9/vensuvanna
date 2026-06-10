@@ -30,6 +30,10 @@
       background: linear-gradient(135deg, #2f0a18 0%, #6e2535 40%, #b84a3a 100%);
     }
 
+    body.fullscreen-bg {
+      background: #000000;
+    }
+
     .site-notice {
         position: fixed;
         top: 16px;
@@ -100,6 +104,17 @@
       padding: 8px;
       backdrop-filter: blur(4px);
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      transition: all 0.3s ease;
+    }
+
+    .image-frame.fullscreen {
+      max-width: 100vw;
+      max-height: 100vh;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
     }
 
     .image-frame img {
@@ -111,6 +126,14 @@
       border-radius: 28px;
       display: block;
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .image-frame.fullscreen img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 0;
+      box-shadow: none;
     }
 
     /* optional caption */
@@ -150,6 +173,13 @@
       border: 1px solid rgba(212, 175, 55, 0.5);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       transition: all 0.2s ease;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav-controls.hidden {
+      opacity: 0;
+      pointer-events: none;
     }
 
     button {
@@ -235,6 +265,13 @@
       gap: 8px;
       backdrop-filter: blur(16px);
       pointer-events: auto;
+      opacity: 1;
+      transition: opacity 0.2s ease;
+    }
+
+    .slide-counter.hidden {
+      opacity: 0;
+      pointer-events: none;
     }
 
     .counter-display {
@@ -488,11 +525,14 @@
   const totalSlidesSpan = document.getElementById("totalSlidesSpan");
   const scrollHintDiv = document.getElementById("scrollHint");
   const bodyEl = document.body;
+  const navControls = document.querySelector(".nav-controls");
+  const slideCounter = document.getElementById("slideCounter");
 
   let currentIndex = 0;
   let transitionLock = false;
   let lastWheelTime = 0;
   let editMode = false;
+  let isFullscreen = false;
   const WHEEL_COOLDOWN = 400;
 
   // ========== Build all slides ==========
@@ -525,11 +565,17 @@
   }
 
   function updateBackgroundTheme() {
-    if (currentIndex < totalPlantSlides) {
+    if (isFullscreen) {
+      bodyEl.classList.add("fullscreen-bg");
+      bodyEl.classList.remove("plant-bg");
       bodyEl.classList.remove("human-bg");
+    } else if (currentIndex < totalPlantSlides) {
+      bodyEl.classList.remove("human-bg");
+      bodyEl.classList.remove("fullscreen-bg");
       bodyEl.classList.add("plant-bg");
     } else {
       bodyEl.classList.remove("plant-bg");
+      bodyEl.classList.remove("fullscreen-bg");
       bodyEl.classList.add("human-bg");
     }
   }
@@ -548,6 +594,28 @@
     linkBtn.disabled = (linkedIdx === -1);
   }
 
+  function toggleFullscreen() {
+    const slides = document.querySelectorAll(".slide");
+    if (!slides.length) return;
+
+    const activeSlide = slides[currentIndex];
+    const imageFrame = activeSlide.querySelector(".image-frame");
+
+    isFullscreen = !isFullscreen;
+
+    if (isFullscreen) {
+      imageFrame.classList.add("fullscreen");
+      navControls.classList.add("hidden");
+      slideCounter.classList.add("hidden");
+    } else {
+      imageFrame.classList.remove("fullscreen");
+      navControls.classList.remove("hidden");
+      slideCounter.classList.remove("hidden");
+    }
+
+    updateBackgroundTheme();
+  }
+
   function showSlide(index, fromJump = false) {
     if (transitionLock) return;
     if (index < 0) index = 0;
@@ -560,6 +628,15 @@
     if (!slides.length) {
       transitionLock = false;
       return;
+    }
+
+    // Exit fullscreen when changing slides
+    if (isFullscreen) {
+      const currentFrame = slides[currentIndex].querySelector(".image-frame");
+      currentFrame.classList.remove("fullscreen");
+      isFullscreen = false;
+      navControls.classList.remove("hidden");
+      slideCounter.classList.remove("hidden");
     }
 
     slides[currentIndex].classList.remove("active");
@@ -659,7 +736,7 @@
 
   // ========== SCROLL HANDLING ==========
   function handleWheel(e) {
-    if (transitionLock) return;
+    if (transitionLock || isFullscreen) return;
     const now = Date.now();
     if (now - lastWheelTime < WHEEL_COOLDOWN) {
       e.preventDefault();
@@ -683,7 +760,7 @@
     touchStartTime = Date.now();
   }
   function handleTouchEnd(e) {
-    if (transitionLock) return;
+    if (transitionLock || isFullscreen) return;
     const touchEndY = e.changedTouches[0].clientY;
     const diff = touchStartY - touchEndY;
     const dt = Date.now() - touchStartTime;
@@ -700,6 +777,16 @@
 
   function handleKeydown(e) {
     if (transitionLock) return;
+    
+    // Handle fullscreen toggle
+    if ((e.key === "f" || e.key === "F") && !editMode) {
+      e.preventDefault();
+      toggleFullscreen();
+      return;
+    }
+
+    if (isFullscreen) return;
+
     if (e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "PageDown") {
       e.preventDefault();
       nextSlide();
