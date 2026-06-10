@@ -30,6 +30,33 @@
       background: linear-gradient(135deg, #2f0a18 0%, #6e2535 40%, #b84a3a 100%);
     }
 
+    .site-notice {
+        position: fixed;
+        top: 16px;
+        right: 5%;
+        text-align: center;
+        font-size: 0.75rem;
+        color: #000;
+        padding: 6px 12px;
+        width: fit-content;
+        margin: 0 auto;
+        border-radius: 60px;
+        z-index: 40;
+        pointer-events: none;
+        letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 700px) {
+        .site-notice {
+            font-size: 0.6rem;
+            top: 8px;
+            padding: 4px 10px;
+            white-space: nowrap;
+            overflow-x: auto;
+            max-width: 90vw;
+        }
+    }
+
     .slideshow-container {
       position: fixed;
       top: 0;
@@ -336,6 +363,9 @@
   </style>
 </head>
 <body>
+<div class="site-notice">
+    📍 https://paticca.vercel.app
+</div>
 
 <div class="slideshow-container" id="slideshowContainer"></div>
 
@@ -391,7 +421,8 @@
     "h15-byadhi.png", // byadhi
     "h16-marana.png", // marana
     "h17-soka.png", // soka, parideva, dukkha, domanassa, upayasa
-    "h18-cuti.png" // cuti citta
+    "h18-cuti.png", // cuti citta
+    "h19-cycle.png"
   ];
 
   // ============================================================
