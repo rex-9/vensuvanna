@@ -156,20 +156,21 @@
       background: rgba(25, 30, 45, 0.85);
       border: none;
       color: #ffdf88;
-      font-size: 0.9rem;
-      padding: 8px 20px;
+      font-size: 1rem;
+      padding: 8px 16px;
       border-radius: 50px;
       cursor: pointer;
       font-family: 'Cinzel', 'Segoe UI', monospace;
       font-weight: 600;
-      letter-spacing: 0.5px;
       transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       backdrop-filter: blur(4px);
       border: 1px solid rgba(212, 175, 55, 0.4);
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
+      min-width: 44px;
     }
 
     button:hover:not(:disabled) {
@@ -295,9 +296,9 @@
         padding: 6px 12px;
       }
       button {
-        padding: 6px 12px;
-        font-size: 0.7rem;
-        gap: 4px;
+        padding: 6px 10px;
+        font-size: 0.85rem;
+        min-width: 38px;
       }
       #linkBtn {
         padding: 6px 10px;
@@ -327,7 +328,8 @@
     @media (max-width: 480px) {
       button {
         padding: 5px 8px;
-        font-size: 0.65rem;
+        font-size: 0.75rem;
+        min-width: 34px;
       }
       .nav-controls {
         gap: 5px;
@@ -370,10 +372,11 @@
 <div class="slideshow-container" id="slideshowContainer"></div>
 
 <div class="nav-controls">
-  <button id="prevBtn"><span>⬅️</span></button>
-  <button id="nextBtn"><span>➡️</span></button>
+  <button id="firstBtn" title="First slide"><span>⏮️</span></button>
+  <button id="prevBtn" title="Previous slide"><span>⬅️</span></button>
   <button id="linkBtn" title="Jump to matching plant/human slide"><span>🔄</span></button>
-  <button id="resetBtn"><span>↪️</span></button>
+  <button id="nextBtn" title="Next slide"><span>➡️</span></button>
+  <button id="lastBtn" title="Last slide"><span>⏭️</span></button>
 </div>
 <div class="slide-counter" id="slideCounter">
   <span class="counter-display" id="counterDisplay">1</span>
@@ -476,10 +479,11 @@
 
   // ========== DOM elements ==========
   const container = document.getElementById("slideshowContainer");
+  const firstBtn = document.getElementById("firstBtn");
   const prevBtn = document.getElementById("prevBtn");
-  const nextBtn = document.getElementById("nextBtn");
-  const resetBtn = document.getElementById("resetBtn");
   const linkBtn = document.getElementById("linkBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const lastBtn = document.getElementById("lastBtn");
   const counterDisplay = document.getElementById("counterDisplay");
   const totalSlidesSpan = document.getElementById("totalSlidesSpan");
   const scrollHintDiv = document.getElementById("scrollHint");
@@ -531,12 +535,14 @@
   }
 
   function updateButtonsState() {
+    // First button: disabled at first slide
+    firstBtn.disabled = (currentIndex === 0);
     // Prev button: disabled at first slide
     prevBtn.disabled = (currentIndex === 0);
     // Next button: disabled at last slide
     nextBtn.disabled = (currentIndex === TOTAL_SLIDES - 1);
-    // Reset button: disabled at first slide (already at start)
-    resetBtn.disabled = (currentIndex === 0);
+    // Last button: disabled at last slide
+    lastBtn.disabled = (currentIndex === TOTAL_SLIDES - 1);
     // Link button: enabled only if there's a matching slide
     const linkedIdx = getLinkedSlideIndex(currentIndex);
     linkBtn.disabled = (linkedIdx === -1);
@@ -568,9 +574,9 @@
     }, 500);
   }
 
-  function nextSlide() {
-    if (currentIndex + 1 < TOTAL_SLIDES) {
-      showSlide(currentIndex + 1);
+  function firstSlide() {
+    if (currentIndex !== 0) {
+      showSlide(0);
     }
   }
 
@@ -580,16 +586,22 @@
     }
   }
 
-  function resetToStart() {
-    if (currentIndex !== 0) {
-      showSlide(0);
-    }
-  }
-
   function jumpToLinked() {
     const linked = getLinkedSlideIndex(currentIndex);
     if (linked !== -1 && linked !== currentIndex) {
       showSlide(linked);
+    }
+  }
+
+  function nextSlide() {
+    if (currentIndex + 1 < TOTAL_SLIDES) {
+      showSlide(currentIndex + 1);
+    }
+  }
+
+  function lastSlide() {
+    if (currentIndex !== TOTAL_SLIDES - 1) {
+      showSlide(TOTAL_SLIDES - 1);
     }
   }
 
@@ -696,7 +708,10 @@
       prevSlide();
     } else if (e.key === "Home") {
       e.preventDefault();
-      resetToStart();
+      firstSlide();
+    } else if (e.key === "End") {
+      e.preventDefault();
+      lastSlide();
     }
   }
 
@@ -712,10 +727,11 @@
     window.addEventListener("touchend", handleTouchEnd, { passive: false });
     window.addEventListener("keydown", handleKeydown);
 
+    firstBtn.addEventListener("click", () => firstSlide());
     prevBtn.addEventListener("click", () => prevSlide());
-    nextBtn.addEventListener("click", () => nextSlide());
-    resetBtn.addEventListener("click", () => resetToStart());
     linkBtn.addEventListener("click", () => jumpToLinked());
+    nextBtn.addEventListener("click", () => nextSlide());
+    lastBtn.addEventListener("click", () => lastSlide());
 
     let hintTimer = setTimeout(() => {
       if (scrollHintDiv) scrollHintDiv.style.opacity = "0.5";
