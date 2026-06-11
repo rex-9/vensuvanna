@@ -18,49 +18,15 @@
       height: 100vh;
       overflow: hidden;
       font-family: 'Segoe UI', 'Noto Sans', 'Cinzel', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      transition: background 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    }
-
-    /* plant theme background (sky blue) */
-    body.plant-bg {
       background: linear-gradient(145deg, #b7defa 0%, #6ba2d0 60%, #2c6288 100%);
-    }
-    /* human theme background (crimson gradient) */
-    body.human-bg {
-      background: linear-gradient(135deg, #2f0a18 0%, #6e2535 40%, #b84a3a 100%);
+      transition: background 0.3s ease;
     }
 
     body.fullscreen-bg {
       background: #000000;
     }
 
-    .site-notice {
-        position: fixed;
-        top: 16px;
-        right: 5%;
-        text-align: center;
-        font-size: 0.75rem;
-        color: rgba(0, 0, 0, 0.8);
-        padding: 6px 12px;
-        width: fit-content;
-        margin: 0 auto;
-        border-radius: 60px;
-        z-index: 40;
-        pointer-events: none;
-        letter-spacing: 0.5px;
-    }
-
-    @media (max-width: 700px) {
-        .site-notice {
-            font-size: 0.6rem;
-            top: 8px;
-            padding: 4px 10px;
-            white-space: nowrap;
-            overflow-x: auto;
-            max-width: 90vw;
-        }
-    }
-
+    /* main container */
     .slideshow-container {
       position: fixed;
       top: 0;
@@ -68,6 +34,16 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* featured image area */
+    .featured-area {
+      flex: 1;
+      position: relative;
+      min-height: 0;
+      background: rgba(0, 0, 0, 0.05);
     }
 
     .slide {
@@ -93,7 +69,7 @@
     /* image wrapper — preserves aspect ratio, no crop, no stretch */
     .image-frame {
       max-width: 88vw;
-      max-height: 82vh;
+      max-height: 70vh;
       width: auto;
       height: auto;
       display: flex;
@@ -121,7 +97,7 @@
 
     .image-frame img {
       max-width: 100%;
-      max-height: 82vh;
+      max-height: 70vh;
       width: auto;
       height: auto;
       object-fit: contain;
@@ -131,7 +107,20 @@
       transition: all 0.3s ease;
     }
 
-    .image-frame.fullscreen img {
+    .image-frame video {
+      max-width: 100%;
+      max-height: 70vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 28px;
+      display: block;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .image-frame.fullscreen img,
+    .image-frame.fullscreen video {
       width: 100%;
       height: 100%;
       max-width: 100%;
@@ -142,45 +131,136 @@
       box-shadow: none;
     }
 
-    /* optional caption */
-    .slide-caption {
-      position: absolute;
-      bottom: 28px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-size: 0.75rem;
-      letter-spacing: 1px;
-      color: rgba(255, 250, 210, 0.9);
-      font-family: 'Cinzel', serif;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(8px);
-      width: fit-content;
-      margin: 0 auto;
-      padding: 6px 20px;
-      border-radius: 60px;
-      pointer-events: none;
-      z-index: 20;
-      font-weight: 500;
+    /* ===== HORIZONTAL CAROUSEL (MENU) ===== */
+    .carousel-section {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 12px 0;
+      transition: all 0.3s ease;
     }
 
-    /* ===== IMPROVED RESPONSIVE NAVIGATION BUTTONS ===== */
-    .nav-controls {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 30;
+    .carousel-section.hidden {
+      display: none;
+    }
+
+    .carousel-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #d4af37 #2a2a3a;
+      margin: 0px 16px 64px 16px;
+    }
+
+    .carousel-container::-webkit-scrollbar {
+      height: 5px;
+    }
+
+    .carousel-container::-webkit-scrollbar-track {
+      background: #2a2a3a;
+      border-radius: 10px;
+    }
+
+    .carousel-container::-webkit-scrollbar-thumb {
+      background: #d4af37;
+      border-radius: 10px;
+    }
+
+    .carousel-track {
       display: flex;
       gap: 12px;
-      background: rgba(10, 14, 23, 0.65);
+      padding: 8px 0 12px 0;
+      min-width: min-content;
+    }
+
+    .carousel-item {
+      flex-shrink: 0;
+      width: 100px;
+      height: 70px;
+      background: rgba(20, 25, 40, 0.8);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .carousel-item:hover {
+      transform: translateY(-3px);
+      border-color: #d4af37aa;
+    }
+
+    .carousel-item.active {
+      border-color: #d4af37;
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+      transform: scale(1.02);
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    /* Video thumbnail overlay for carousel */
+    .video-thumb {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.8;
+    }
+
+    .video-thumb::after {
+      content: "▶";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      font-family: monospace;
+    }
+
+    /* navigation buttons */
+    .nav-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 30;
+      display: flex;
+      gap: 10px;
+      background: rgba(10, 14, 23, 0.8);
       backdrop-filter: blur(16px);
-      padding: 8px 16px;
-      border-radius: 60px;
+      padding: 8px 14px;
+      border-radius: 50px;
       border: 1px solid rgba(212, 175, 55, 0.5);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       transition: all 0.2s ease;
-      opacity: 1;
-      pointer-events: auto;
     }
 
     .nav-controls.hidden {
@@ -192,87 +272,54 @@
       background: rgba(25, 30, 45, 0.85);
       border: none;
       color: #ffdf88;
-      font-size: 1rem;
-      padding: 8px 16px;
+      font-size: 0.9rem;
+      padding: 6px 14px;
       border-radius: 50px;
       cursor: pointer;
       font-family: 'Cinzel', 'Segoe UI', monospace;
       font-weight: 600;
       transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      backdrop-filter: blur(4px);
       border: 1px solid rgba(212, 175, 55, 0.4);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      min-width: 44px;
+      gap: 5px;
+      min-width: 40px;
     }
 
     button:hover:not(:disabled) {
       background: #d4af37;
       color: #1a1a2a;
       transform: translateY(-2px);
-      border-color: rgba(255, 245, 180, 0.9);
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
-    }
-
-    button:active:not(:disabled) {
-      transform: translateY(1px);
     }
 
     button:disabled {
       opacity: 0.4;
       cursor: not-allowed;
-      transform: none;
     }
 
-    /* Reset button specific styling */
-    #resetBtn {
-      background: rgba(45, 35, 55, 0.85);
-      border-color: rgba(212, 175, 55, 0.5);
-    }
-
-    #resetBtn:hover:not(:disabled) {
-      background: #c9a03d;
-      color: #1a1a2a;
-    }
-
-    /* Link button (swap between matching plant/human slides) */
     #linkBtn {
       background: rgba(35, 45, 65, 0.9);
-      border-color: rgba(212, 175, 55, 0.6);
-      padding: 8px 16px;
-      font-size: 0.85rem;
-    }
-    #linkBtn span {
-      font-size: 1rem;
     }
 
-    /* typeable slide counter */
+    /* slide counter */
     .slide-counter {
       position: fixed;
-      bottom: 24px;
-      left: 24px;
-      background: rgba(10, 14, 23, 0.7);
+      bottom: 20px;
+      left: 20px;
+      background: rgba(10, 14, 23, 0.8);
       backdrop-filter: blur(16px);
-      padding: 6px 16px;
-      border-radius: 60px;
+      padding: 5px 14px;
+      border-radius: 50px;
       color: #f0e6b0;
       font-family: 'Cinzel', monospace;
-      font-size: 0.9rem;
-      letter-spacing: 1px;
+      font-size: 0.85rem;
       z-index: 30;
       border: 1px solid rgba(212, 175, 55, 0.5);
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       display: flex;
       align-items: center;
       gap: 8px;
-      backdrop-filter: blur(16px);
       pointer-events: auto;
-      opacity: 1;
-      transition: opacity 0.2s ease;
     }
 
     .slide-counter.hidden {
@@ -282,7 +329,7 @@
 
     .counter-display {
       cursor: pointer;
-      padding: 4px 8px;
+      padding: 2px 8px;
       border-radius: 40px;
       transition: background 0.2s;
     }
@@ -296,130 +343,76 @@
       border: 1px solid #d4af37;
       color: #ffdf88;
       font-family: 'Cinzel', monospace;
-      font-size: 0.9rem;
-      padding: 4px 10px;
+      font-size: 0.85rem;
+      padding: 3px 8px;
       border-radius: 40px;
-      width: 70px;
+      width: 60px;
       text-align: center;
       outline: none;
     }
 
-    .counter-input:focus {
-      border-color: #ffdf88;
-      background: rgba(0, 0, 0, 0.8);
+    /* fullscreen adjustments */
+    body.fullscreen-bg .carousel-section,
+    body.fullscreen-bg .nav-controls:not(.hidden),
+    body.fullscreen-bg .slide-counter:not(.hidden) {
+      display: none;
     }
 
-    .counter-sep {
-      margin: 0 2px;
+    body.fullscreen-bg .featured-area {
+      flex: 1;
     }
 
-    /* ===== MOBILE RESPONSIVE ADJUSTMENTS ===== */
+    body.fullscreen-bg .image-frame {
+      max-width: 100vw;
+      max-height: 100vh;
+    }
+
     @media (max-width: 768px) {
+      .carousel-item {
+        width: 70px;
+        height: 50px;
+      }
       .image-frame {
-        max-width: 92vw;
-        max-height: 75vh;
-        padding: 6px;
-        border-radius: 28px;
+        max-height: 60vh;
       }
-      .image-frame img {
-        max-height: 75vh;
-        border-radius: 22px;
-      }
-      .slide-caption {
-        font-size: 0.6rem;
-        bottom: 16px;
-        padding: 4px 14px;
-        letter-spacing: 0.5px;
-      }
-
-      .nav-controls {
-        bottom: 16px;
-        right: 16px;
-        gap: 8px;
-        padding: 6px 12px;
+      .image-frame img,
+      .image-frame video {
+        max-height: 60vh;
       }
       button {
-        padding: 6px 10px;
-        font-size: 0.85rem;
-        min-width: 38px;
-      }
-      #linkBtn {
-        padding: 6px 10px;
-      }
-      #linkBtn span {
-        font-size: 0.9rem;
-      }
-
-      .slide-counter {
-        bottom: 16px;
-        left: 16px;
-        padding: 4px 12px;
-        font-size: 0.7rem;
-      }
-      .counter-input {
-        width: 55px;
-        font-size: 0.7rem;
-        padding: 3px 6px;
-      }
-      .scroll-hint {
-        bottom: 18px;
-        font-size: 0.55rem;
-        padding: 4px 12px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      button {
-        padding: 5px 8px;
+        padding: 5px 10px;
         font-size: 0.75rem;
         min-width: 34px;
       }
-      .nav-controls {
-        gap: 5px;
-        padding: 5px 8px;
-      }
-      #linkBtn {
-        padding: 5px 8px;
-      }
       .slide-counter {
-        font-size: 0.6rem;
-        padding: 3px 10px;
+        font-size: 0.7rem;
+        padding: 4px 10px;
+      }
+      .video-thumb::after {
+        width: 22px;
+        height: 22px;
+        font-size: 14px;
       }
     }
-
-    @media (orientation: landscape) and (max-height: 500px) {
-      .image-frame {
-        max-height: 70vh;
-      }
-      .image-frame img {
-        max-height: 70vh;
-      }
-      .nav-controls {
-        bottom: 8px;
-        right: 12px;
-      }
-      .slide-counter {
-        bottom: 8px;
-        left: 12px;
-      }
-    }
-
-    ::-webkit-scrollbar { display: none; }
   </style>
 </head>
 <body>
-<div class="site-notice">
-    📍 https://paticca.vercel.app
+
+<div class="slideshow-container" id="slideshowContainer">
+  <div class="featured-area" id="featuredArea"></div>
+  <div class="carousel-section" id="carouselSection">
+    <div class="carousel-container" id="carouselContainer">
+      <div class="carousel-track" id="carouselTrack"></div>
+    </div>
+  </div>
 </div>
 
-<div class="slideshow-container" id="slideshowContainer"></div>
-
 <div class="nav-controls">
-  <button id="firstBtn" title="First slide"><span>⏮️</span></button>
-  <button id="prevBtn" title="Previous slide"><span>⬅️</span></button>
-  <button id="linkBtn" title="Jump to matching plant/human slide"><span>🔄</span></button>
-  <button id="nextBtn" title="Next slide"><span>➡️</span></button>
-  <button id="lastBtn" title="Last slide"><span>⏭️</span></button>
+  <button id="firstBtn" title="First slide">⏮️</button>
+  <button id="prevBtn" title="Previous">⬅️</button>
+  <button id="linkBtn" title="Match (space)">🔄</button>
+  <button id="nextBtn" title="Next">➡️</button>
+  <button id="lastBtn" title="Last">⏭️</button>
 </div>
 <div class="slide-counter" id="slideCounter">
   <span class="counter-display" id="counterDisplay">1</span>
@@ -429,10 +422,11 @@
 
 <script>
   // ============================================================
-  // IMAGE ARRAYS — EDIT YOUR IMAGE FILENAMES HERE
+  // FLEXIBLE IMAGE ARRAY — EDIT THIS FOR ANY DHAMMA TALK
   // ============================================================
 
-  const plantImageUrls = [
+  const imageUrls = [
+    // "spider.mp4",
     "cover.png",
     "menu.png",
     "p1-sankhara.png", // avijja, tanha, sankhara
@@ -446,10 +440,7 @@
     "p9-bhava.png", // bhava
     "p10-jati.png", // jati
     "p11-cycle.png",
-    "p12transition.png"
-  ];
-
-  const humanImageUrls = [
+    "p12transition.png",
     "h1-vinnana.png", // vinnana
     "h2-namarupa.png", // nama-rupa
     "h3-abbuda.png", // abbuda
@@ -472,56 +463,69 @@
     "thank.png"
   ];
 
-  // ============================================================
-  // AUTO-CALCULATE SLIDE COUNTS
-  // ============================================================
-  const totalPlantSlides = plantImageUrls.length;
-  const totalHumanSlides = humanImageUrls.length;
-  const TOTAL_SLIDES = totalPlantSlides + totalHumanSlides;
+  const TOTAL_SLIDES = imageUrls.length;
 
-  // Build full image URL array (plant then human)
-  const allImageUrls = [...plantImageUrls, ...humanImageUrls];
+  // Helper: check if file is video
+  function isVideoFile(filename) {
+    const ext = filename.split('.').pop().toLowerCase();
+    return ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv'].includes(ext);
+  }
 
-  // Helper: extract base name from filename (e.g., "p2-vinnana.png" -> "vinnana")
+  // Extract base name for linking
   function extractBaseName(filename) {
-    const match = filename.match(/[ph]\d+-([a-z]+)\.png$/i);
-    return match ? match[1] : null;
+    const match = filename.match(/-([a-z]+)\.(png|jpg|jpeg|mp4|webm|mov)$/i);
+    if (match) return match[1];
+    const simpleMatch = filename.match(/([a-z]+)\.(png|jpg|jpeg|mp4|webm|mov)$/i);
+    return simpleMatch ? simpleMatch[1] : null;
   }
 
-  // Build mapping from base name to plant and human indices
-  const plantIndexByName = {};
-  const humanIndexByName = {};
-
-  for (let i = 0; i < totalPlantSlides; i++) {
-    const name = extractBaseName(plantImageUrls[i]);
-    if (name) plantIndexByName[name] = i;
-  }
-  for (let i = 0; i < totalHumanSlides; i++) {
-    const name = extractBaseName(humanImageUrls[i]);
-    if (name) humanIndexByName[name] = i;
-  }
-
-  // Find matching slide index for current slide (if any)
-  function getLinkedSlideIndex(currentIdx) {
-    if (currentIdx < totalPlantSlides) {
-      const filename = plantImageUrls[currentIdx];
-      const baseName = extractBaseName(filename);
-      if (baseName && humanIndexByName[baseName] !== undefined) {
-        return totalPlantSlides + humanIndexByName[baseName];
-      }
-    } else {
-      const humanIdx = currentIdx - totalPlantSlides;
-      const filename = humanImageUrls[humanIdx];
-      const baseName = extractBaseName(filename);
-      if (baseName && plantIndexByName[baseName] !== undefined) {
-        return plantIndexByName[baseName];
-      }
+  // Build linking map
+  const slidesByName = {};
+  for (let i = 0; i < TOTAL_SLIDES; i++) {
+    const name = extractBaseName(imageUrls[i]);
+    if (name) {
+      if (!slidesByName[name]) slidesByName[name] = [];
+      slidesByName[name].push(i);
     }
-    return -1;
   }
 
-  // ========== DOM elements ==========
-  const container = document.getElementById("slideshowContainer");
+  function getLinkedSlideIndex(currentIdx) {
+    const filename = imageUrls[currentIdx];
+    const baseName = extractBaseName(filename);
+    if (!baseName || !slidesByName[baseName]) return -1;
+    const matches = slidesByName[baseName];
+    if (matches.length <= 1) return -1;
+    const currentPos = matches.indexOf(currentIdx);
+    const nextIdx = (currentPos + 1) % matches.length;
+    return matches[nextIdx];
+  }
+
+  // URL and storage
+  function getSlideFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const slideParam = urlParams.get('slide');
+    if (slideParam) {
+      const slideNum = parseInt(slideParam, 10);
+      if (!isNaN(slideNum) && slideNum >= 1 && slideNum <= TOTAL_SLIDES) return slideNum - 1;
+    }
+    const saved = localStorage.getItem('dhammaTalkLastSlide');
+    if (saved) {
+      const s = parseInt(saved, 10);
+      if (!isNaN(s) && s >= 0 && s < TOTAL_SLIDES) return s;
+    }
+    return 0;
+  }
+
+  function updateURL(slideIndex) {
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set('slide', slideIndex + 1);
+    window.history.pushState({}, '', newUrl);
+    localStorage.setItem('dhammaTalkLastSlide', slideIndex);
+  }
+
+  // DOM elements
+  const featuredArea = document.getElementById("featuredArea");
+  const carouselTrack = document.getElementById("carouselTrack");
   const firstBtn = document.getElementById("firstBtn");
   const prevBtn = document.getElementById("prevBtn");
   const linkBtn = document.getElementById("linkBtn");
@@ -529,61 +533,136 @@
   const lastBtn = document.getElementById("lastBtn");
   const counterDisplay = document.getElementById("counterDisplay");
   const totalSlidesSpan = document.getElementById("totalSlidesSpan");
-  const scrollHintDiv = document.getElementById("scrollHint");
   const bodyEl = document.body;
   const navControls = document.querySelector(".nav-controls");
   const slideCounter = document.getElementById("slideCounter");
+  const carouselSection = document.getElementById("carouselSection");
 
-  let currentIndex = 0;
+  let currentIndex = getSlideFromURL();
   let transitionLock = false;
-  let lastWheelTime = 0;
   let editMode = false;
   let isFullscreen = false;
-  const WHEEL_COOLDOWN = 400;
 
-  // ========== Build all slides ==========
+  // Build featured slides with image/video support
   function buildSlides() {
-    container.innerHTML = "";
+    featuredArea.innerHTML = "";
     for (let i = 0; i < TOTAL_SLIDES; i++) {
       const slide = document.createElement("div");
       slide.className = "slide";
-      if (i === 0) slide.classList.add("active");
-
+      if (i === currentIndex) slide.classList.add("active");
       const frame = document.createElement("div");
       frame.className = "image-frame";
-      const img = document.createElement("img");
-      img.src = allImageUrls[i];
-      img.loading = "eager";
-      img.onerror = function() {
-        this.src = "https://stackoverflow.com/questions/35305875/progress-bar-while-loading-image-using-glide";
-        // this.src = "https://placehold.co/1200x800/3a6b47/d4af37?text=Image+Not+Found";
-      };
-      frame.appendChild(img);
+
+      const fileUrl = imageUrls[i];
+      const isVideo = isVideoFile(fileUrl);
+
+      if (isVideo) {
+        const video = document.createElement("video");
+        video.src = fileUrl;
+        video.autoplay = false;
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.controls = true;
+        video.style.maxWidth = "100%";
+        video.style.maxHeight = "70vh";
+        video.style.width = "auto";
+        video.style.height = "auto";
+        video.style.objectFit = "contain";
+        frame.appendChild(video);
+      } else {
+        const img = document.createElement("img");
+        img.src = fileUrl;
+        img.alt = `Slide ${i + 1}`;
+        img.onerror = function() {
+          this.src = "https://placehold.co/1200x800/2a2a3a/d4af37?text=Missing";
+        };
+        frame.appendChild(img);
+      }
+
       slide.appendChild(frame);
-      container.appendChild(slide);
+      featuredArea.appendChild(slide);
     }
     totalSlidesSpan.innerText = TOTAL_SLIDES;
     updateCounterDisplay();
   }
 
-  function updateCounterDisplay() {
-    counterDisplay.innerText = currentIndex + 1;
+  // Build carousel preview with video thumbnails (using first frame via poster or img)
+  function buildCarousel() {
+    carouselTrack.innerHTML = "";
+    for (let i = 0; i < TOTAL_SLIDES; i++) {
+      const item = document.createElement("div");
+      item.className = "carousel-item";
+      if (i === currentIndex) item.classList.add("active");
+
+      const fileUrl = imageUrls[i];
+      const isVideo = isVideoFile(fileUrl);
+
+      if (isVideo) {
+        // For video: create div with play icon overlay, use video element to extract frame (or use img fallback)
+        const thumbDiv = document.createElement("div");
+        thumbDiv.className = "video-thumb";
+        const video = document.createElement("video");
+        video.src = fileUrl;
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = "metadata";
+        video.style.width = "100%";
+        video.style.height = "100%";
+        video.style.objectFit = "cover";
+        // Seek to first frame and capture as thumbnail
+        video.addEventListener("loadeddata", function() {
+          this.currentTime = 0.1;
+        });
+        video.addEventListener("seeked", function() {
+          // Create canvas to capture frame
+          const canvas = document.createElement("canvas");
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const img = document.createElement("img");
+          img.src = canvas.toDataURL();
+          img.style.width = "100%";
+          img.style.height = "100%";
+          img.style.objectFit = "cover";
+          thumbDiv.innerHTML = "";
+          thumbDiv.appendChild(img);
+          // Clean up
+          video.pause();
+        });
+        video.load();
+        thumbDiv.appendChild(video);
+        item.appendChild(thumbDiv);
+      } else {
+        const img = document.createElement("img");
+        img.src = fileUrl;
+        img.alt = `thumb ${i+1}`;
+        img.onerror = function() { this.src = "https://placehold.co/100x70/2a2a3a/d4af37?text=?"; };
+        item.appendChild(img);
+      }
+
+      item.addEventListener("click", (function(idx) {
+        return function() { if (!isFullscreen && !transitionLock) showSlide(idx); };
+      })(i));
+      carouselTrack.appendChild(item);
+    }
   }
 
-  function updateBackgroundTheme() {
-    if (isFullscreen) {
-      bodyEl.classList.add("fullscreen-bg");
-      bodyEl.classList.remove("plant-bg");
-      bodyEl.classList.remove("human-bg");
-    } else if (currentIndex < totalPlantSlides) {
-      bodyEl.classList.remove("human-bg");
-      bodyEl.classList.remove("fullscreen-bg");
-      bodyEl.classList.add("plant-bg");
-    } else {
-      bodyEl.classList.remove("plant-bg");
-      bodyEl.classList.remove("fullscreen-bg");
-      bodyEl.classList.add("human-bg");
+  function updateCarouselActive() {
+    const items = document.querySelectorAll(".carousel-item");
+    items.forEach((item, idx) => {
+      if (idx === currentIndex) item.classList.add("active");
+      else item.classList.remove("active");
+    });
+    const activeItem = items[currentIndex];
+    if (activeItem && !isFullscreen) {
+      activeItem.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
     }
+  }
+
+  function updateCounterDisplay() {
+    counterDisplay.innerText = currentIndex + 1;
   }
 
   function updateButtonsState() {
@@ -596,104 +675,79 @@
     // Last button: disabled at last slide
     lastBtn.disabled = (currentIndex === TOTAL_SLIDES - 1);
     // Link button: enabled only if there's a matching slide
-    const linkedIdx = getLinkedSlideIndex(currentIndex);
-    linkBtn.disabled = (linkedIdx === -1);
+    const linked = getLinkedSlideIndex(currentIndex);
+    linkBtn.disabled = (linked === -1 || linked === currentIndex);
   }
 
-  function toggleFullscreen() {
-    const slides = document.querySelectorAll(".slide");
-    if (!slides.length) return;
-
-    const activeSlide = slides[currentIndex];
-    const imageFrame = activeSlide.querySelector(".image-frame");
-
-    isFullscreen = !isFullscreen;
-
-    if (isFullscreen) {
-      imageFrame.classList.add("fullscreen");
-      navControls.classList.add("hidden");
-      slideCounter.classList.add("hidden");
-    } else {
-      imageFrame.classList.remove("fullscreen");
-      navControls.classList.remove("hidden");
-      slideCounter.classList.remove("hidden");
-    }
-
-    updateBackgroundTheme();
-  }
-
-  function showSlide(index, fromJump = false) {
+  function showSlide(index, updateUrlParam = true) {
     if (transitionLock) return;
     if (index < 0) index = 0;
     if (index >= TOTAL_SLIDES) index = TOTAL_SLIDES - 1;
     if (index === currentIndex) return;
 
     transitionLock = true;
-
     const slides = document.querySelectorAll(".slide");
-    if (!slides.length) {
-      transitionLock = false;
-      return;
-    }
+    if (!slides.length) { transitionLock = false; return; }
 
     if (isFullscreen) {
-      slides[currentIndex].querySelector(".image-frame").classList.remove("fullscreen");
+      slides[currentIndex]?.querySelector(".image-frame")?.classList.remove("fullscreen");
     }
 
-    slides[currentIndex].classList.remove("active");
-    slides[index].classList.add("active");
+    slides[currentIndex]?.classList.remove("active");
+    slides[index]?.classList.add("active");
 
     if (isFullscreen) {
-      slides[index].querySelector(".image-frame").classList.add("fullscreen");
+      slides[index]?.querySelector(".image-frame")?.classList.add("fullscreen");
     }
+
     currentIndex = index;
     updateCounterDisplay();
-    updateBackgroundTheme();
     updateButtonsState();
+    updateCarouselActive();
 
-    setTimeout(() => {
-      transitionLock = false;
-    }, 500);
+    if (updateUrlParam) updateURL(currentIndex);
+
+    setTimeout(() => { transitionLock = false; }, 500);
   }
 
-  function firstSlide() {
-    if (currentIndex !== 0) {
-      showSlide(0);
-    }
-  }
-
-  function prevSlide() {
-    if (currentIndex - 1 >= 0) {
-      showSlide(currentIndex - 1);
-    }
-  }
-
+  function firstSlide() { if (currentIndex !== 0) showSlide(0); }
+  function prevSlide() { if (currentIndex > 0) showSlide(currentIndex - 1); }
+  function nextSlide() { if (currentIndex + 1 < TOTAL_SLIDES) showSlide(currentIndex + 1); }
+  function lastSlide() { if (currentIndex !== TOTAL_SLIDES - 1) showSlide(TOTAL_SLIDES - 1); }
   function jumpToLinked() {
     const linked = getLinkedSlideIndex(currentIndex);
-    if (linked !== -1 && linked !== currentIndex) {
-      showSlide(linked);
+    if (linked !== -1 && linked !== currentIndex) showSlide(linked);
+  }
+
+  // Fullscreen toggle
+  function toggleFullscreen() {
+    const slides = document.querySelectorAll(".slide");
+    const activeSlide = slides[currentIndex];
+    const imageFrame = activeSlide?.querySelector(".image-frame");
+
+    isFullscreen = !isFullscreen;
+
+    if (isFullscreen) {
+      bodyEl.classList.add("fullscreen-bg");
+      imageFrame?.classList.add("fullscreen");
+      navControls.classList.add("hidden");
+      slideCounter.classList.add("hidden");
+      carouselSection.classList.add("hidden");
+    } else {
+      bodyEl.classList.remove("fullscreen-bg");
+      imageFrame?.classList.remove("fullscreen");
+      navControls.classList.remove("hidden");
+      slideCounter.classList.remove("hidden");
+      carouselSection.classList.remove("hidden");
     }
   }
 
-  function nextSlide() {
-    if (currentIndex + 1 < TOTAL_SLIDES) {
-      showSlide(currentIndex + 1);
-    }
-  }
-
-  function lastSlide() {
-    if (currentIndex !== TOTAL_SLIDES - 1) {
-      showSlide(TOTAL_SLIDES - 1);
-    }
-  }
-
-  // Typeable counter: click to edit
+  // Typeable counter
   function initTypeableCounter() {
-    const containerDiv = document.getElementById("slideCounter");
+    const parent = document.getElementById("slideCounter");
     const displaySpan = counterDisplay;
-
     displaySpan.addEventListener("click", (e) => {
-      if (editMode) return;
+      if (editMode || isFullscreen) return;
       e.stopPropagation();
       editMode = true;
       const input = document.createElement("input");
@@ -703,10 +757,7 @@
       input.min = 1;
       input.max = TOTAL_SLIDES;
       input.step = 1;
-
-      const parent = containerDiv;
-      const textNode = displaySpan;
-      parent.replaceChild(input, textNode);
+      parent.replaceChild(input, displaySpan);
       input.focus();
       input.select();
 
@@ -718,78 +769,29 @@
         const newIndex = val - 1;
         parent.replaceChild(displaySpan, input);
         editMode = false;
-        if (newIndex !== currentIndex) {
-          showSlide(newIndex);
-        } else {
-          updateCounterDisplay();
-        }
+        if (newIndex !== currentIndex) showSlide(newIndex);
+        else updateCounterDisplay();
       }
-
       input.addEventListener("blur", commit);
       input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          commit();
-        } else if (e.key === "Escape") {
-          parent.replaceChild(displaySpan, input);
-          editMode = false;
-          updateCounterDisplay();
-        }
+        if (e.key === "Enter") { e.preventDefault(); commit(); }
+        else if (e.key === "Escape") { parent.replaceChild(displaySpan, input); editMode = false; updateCounterDisplay(); }
       });
     });
   }
 
-  // ========== SCROLL HANDLING ==========
-  function handleWheel(e) {
-    if (transitionLock) return;
-    const now = Date.now();
-    if (now - lastWheelTime < WHEEL_COOLDOWN) {
-      e.preventDefault();
-      return;
-    }
-    const delta = e.deltaY;
-    if (delta > 0 && currentIndex + 1 < TOTAL_SLIDES) {
-      lastWheelTime = now;
-      nextSlide();
-    } else if (delta < 0 && currentIndex - 1 >= 0) {
-      lastWheelTime = now;
-      prevSlide();
-    }
-    e.preventDefault();
-  }
-
-  let touchStartY = 0;
-  let touchStartTime = 0;
-  function handleTouchStart(e) {
-    touchStartY = e.touches[0].clientY;
-    touchStartTime = Date.now();
-  }
-  function handleTouchEnd(e) {
-    if (transitionLock) return;
-    const touchEndY = e.changedTouches[0].clientY;
-    const diff = touchStartY - touchEndY;
-    const dt = Date.now() - touchStartTime;
-    if (Math.abs(diff) < 35) return;
-    if (dt < 300 && Math.abs(diff) > 20) {
-      if (diff > 0 && currentIndex + 1 < TOTAL_SLIDES) {
-        nextSlide();
-      } else if (diff < 0 && currentIndex - 1 >= 0) {
-        prevSlide();
-      }
-      e.preventDefault();
-    }
-  }
-
+  // ========== KEYBOARD CONTROLS ==========
   function handleKeydown(e) {
-    if (transitionLock) return;
-    
-    // Handle fullscreen toggle
-    if ((e.key === "f" || e.key === "F" ) && !editMode) {
+    if (transitionLock || editMode) return;
+
+    // Fullscreen toggle on 'f' or 'F'
+    if (e.key === 'f' || e.key === 'F') {
       e.preventDefault();
       toggleFullscreen();
       return;
     }
 
+    // Arrow keys navigation
     if (e.key === "ArrowRight") {
       e.preventDefault();
       nextSlide();
@@ -802,42 +804,38 @@
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
       lastSlide();
-    } else if (e.key === " " && !editMode) {
-      e.preventDefault();
-      jumpToLinked();
+    } else if (e.key === " " || e.key === "Space") {
+      if (!linkBtn.disabled) {
+        e.preventDefault();
+        jumpToLinked();
+      }
     }
+  }
+
+  // Handle browser back/forward navigation
+  function handlePopState() {
+    const newSlide = getSlideFromURL();
+    if (newSlide !== currentIndex) showSlide(newSlide, false); // Don't update URL again (already from URL)
   }
 
   // ========== Initialization ==========
   function init() {
     buildSlides();
-    updateBackgroundTheme();
-    updateButtonsState();
+    buildCarousel();
     initTypeableCounter();
+    updateButtonsState();
+    updateCarouselActive();
 
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("touchstart", handleTouchStart, { passive: false });
-    window.addEventListener("touchend", handleTouchEnd, { passive: false });
     window.addEventListener("keydown", handleKeydown);
+    window.addEventListener("popstate", handlePopState);
 
-    firstBtn.addEventListener("click", () => firstSlide());
-    prevBtn.addEventListener("click", () => prevSlide());
-    linkBtn.addEventListener("click", () => jumpToLinked());
-    nextBtn.addEventListener("click", () => nextSlide());
-    lastBtn.addEventListener("click", () => lastSlide());
+    firstBtn.addEventListener("click", firstSlide);
+    prevBtn.addEventListener("click", prevSlide);
+    linkBtn.addEventListener("click", jumpToLinked);
+    nextBtn.addEventListener("click", nextSlide);
+    lastBtn.addEventListener("click", lastSlide);
 
-    let hintTimer = setTimeout(() => {
-      if (scrollHintDiv) scrollHintDiv.style.opacity = "0.5";
-    }, 4000);
-    window.addEventListener("wheel", () => {
-      if (scrollHintDiv) scrollHintDiv.style.opacity = "0.2";
-      clearTimeout(hintTimer);
-    }, { once: true });
-
-    document.body.addEventListener('touchmove', function(e) {
-      if (e.target.closest('.nav-controls') || e.target.closest('.slide-counter')) return;
-      e.preventDefault();
-    }, { passive: false });
+    if (!new URLSearchParams(window.location.search).has('slide')) updateURL(currentIndex);
   }
 
   init();
