@@ -332,6 +332,31 @@ button:disabled {
   outline: none;
 }
 
+/* GitHub link in slide counter */
+.github-link {
+  color: #d4af37;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-family: 'Segoe UI', sans-serif;
+  opacity: 0.6;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.github-link:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.github-link svg {
+  flex-shrink: 0;
+}
+
 .topic-overlay {
   position: fixed;
   top: 0;
@@ -490,6 +515,17 @@ body.fullscreen-bg .slide-counter:not(.hidden) {
   .slide-counter {
     font-size: 0.7rem;
     padding: 4px 10px;
+  }
+
+  .github-link {
+    font-size: 0.65rem;
+    margin-left: 10px;
+    padding-left: 10px;
+  }
+
+  .github-link span {
+    display: none;
+    /* Hide text on mobile, show only icon */
   }
 
   .topic-modal {
