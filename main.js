@@ -1,672 +1,675 @@
-// ============================================================
-// TOPICS.JSON APPROACH — CLEAN & SIMPLE
-// ============================================================
+/* ═══════════════════════════════════════════════════════════════════════
+   VEN. SUVANNA — SCRIPT.JS
+   Heaven canvas · Light motes · Lotus petals · Carousels · Scroll reveals
+   Structure mirrors MeritMoon's script.js, recoloured for Tāvatiṃsa.
+   ═══════════════════════════════════════════════════════════════════════ */
 
-const BASE_PATH = './';
-const MANIFEST_URL = BASE_PATH + 'topics.json';
+'use strict';
 
-// State
-let topicData = {};
-let topicList = [];
-let currentTopic = '';
-let currentSlideIndex = 0;
-let totalSlides = 0;
-let allSlides = [];
-let isFullscreen = false;
-let transitionLock = false;
-let editMode = false;
-let isInitializing = true;
+/* ── COLOR MIRRORS (matches CSS vars — edit in CSS, mirror here for canvas) */
+const C = {
+  sky: '#BFE0F5',
+  azure: '#3E7CC2',
+  lotus: '#D4738A',
+  gold: '#D4A832',
+  skyBright: '#EAF6FF',
+  azureBright: '#5FA3E8',
+  goldBright: '#F0CC60',
+  skyDim: '#8CB4D0',
+  azureDim: '#1F4A8A',
+  bgDeep: '#0A1530',
+};
 
-// DOM refs
-const featuredArea = document.getElementById('featuredArea');
-const carouselTrack = document.getElementById('carouselTrack');
-const counterDisplay = document.getElementById('counterDisplay');
-const totalSlidesSpan = document.getElementById('totalSlidesSpan');
-const bodyEl = document.body;
-const navControls = document.querySelector('.nav-controls');
-const slideCounter = document.getElementById('slideCounter');
-const carouselSection = document.getElementById('carouselSection');
-const topicOverlay = document.getElementById('topicOverlay');
-const topicListEl = document.getElementById('topicList');
-const topicCloseBtn = document.getElementById('topicCloseBtn');
-const topicBtn = document.getElementById('topicBtn');
-const firstBtn = document.getElementById('firstBtn');
-const prevBtn = document.getElementById('prevBtn');
-const linkBtn = document.getElementById('linkBtn');
-const nextBtn = document.getElementById('nextBtn');
-const lastBtn = document.getElementById('lastBtn');
+/* ══════════════════════════════════════════════════════════════════════
+   1. HEAVEN SKY + LIGHT CANVAS
+   Layered: deep sky gradient → stars (sparse, daytime-faint) →
+   golden light clusters → faint cloud-sea silhouette at canvas bottom
+   ══════════════════════════════════════════════════════════════════════ */
+(function initHeavenCanvas() {
+  const canvas = document.getElementById('heaven-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [], shooters = [], driftClouds = [];
+  let frame = 0, raf;
 
-// ========== HELPERS ==========
-function isVideoFile(filename) {
-  const ext = filename.split('.').pop().toLowerCase();
-  return ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv'].includes(ext);
-}
-
-function isMediaFile(filename) {
-  const ext = filename.split('.').pop().toLowerCase();
-  return ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'bmp', 'mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv'].includes(ext);
-}
-
-function getFileUrl(topic, file) {
-  return `${BASE_PATH}${topic}/${file}`;
-}
-
-function extractBaseName(filename) {
-  const match = filename.match(/\d+-(.+)\./);
-  return match ? match[1] : null;
-}
-
-// ========== URL HANDLING ==========
-function getSlideFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  const topic = params.get('topic');
-  const slide = parseInt(params.get('slide'), 10);
-
-  // If no topic param at all, return null (use defaults)
-  if (!topic) {
-    return null;
+  function rand(a, b) { return Math.random() * (b - a) + a; }
+  function hex2rgb(hex) {
+    return {
+      r: parseInt(hex.slice(1, 3), 16),
+      g: parseInt(hex.slice(3, 5), 16),
+      b: parseInt(hex.slice(5, 7), 16),
+    };
+  }
+  function rgba(hex, a) {
+    const { r, g, b } = hex2rgb(hex);
+    return `rgba(${r},${g},${b},${a})`;
   }
 
-  // If topic exists but no slide or invalid slide, default to 1
-  if (isNaN(slide) || slide < 1) {
-    return { topic: topic, slide: 1 };
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
   }
 
-  return { topic: topic, slide: slide };
-}
-
-function updateURL(topic, slideIndex, replace = false) {
-  const params = new URLSearchParams();
-  if (topic) params.set('topic', topic);
-  params.set('slide', slideIndex + 1);
-  const newUrl = new URL(window.location.href);
-  newUrl.search = params.toString();
-
-  if (replace) {
-    window.history.replaceState({}, '', newUrl);
-  } else {
-    window.history.pushState({}, '', newUrl);
-  }
-}
-
-function cleanURL() {
-  // If URL has no params or only has slide without topic, clean it up
-  const params = new URLSearchParams(window.location.search);
-  const hasTopic = params.has('topic');
-  const hasSlide = params.has('slide');
-
-  // If no params at all, or only slide without topic, remove all params
-  if (!hasTopic || (hasSlide && !hasTopic)) {
-    const cleanUrl = new URL(window.location.href);
-    cleanUrl.search = '';
-    window.history.replaceState({}, '', cleanUrl);
-    return true;
-  }
-
-  // If topic exists but slide is invalid or missing, add slide=1
-  if (hasTopic && !hasSlide) {
-    const topic = params.get('topic');
-    const newUrl = new URL(window.location.href);
-    newUrl.search = `?topic=${topic}&slide=1`;
-    window.history.replaceState({}, '', newUrl);
-    return true;
-  }
-
-  return false;
-}
-
-// ========== LOAD TOPICS ==========
-async function loadTopics() {
-  try {
-    const resp = await fetch(MANIFEST_URL);
-    if (!resp.ok) {
-      throw new Error(`HTTP ${resp.status}`);
-    }
-    const manifest = await resp.json();
-
-    if (typeof manifest !== 'object' || Array.isArray(manifest)) {
-      throw new Error('Invalid manifest format');
-    }
-
-    topicData = {};
-    for (const [key, files] of Object.entries(manifest)) {
-      if (Array.isArray(files) && files.length > 0) {
-        // Keep files in the order they appear in JSON (no sorting)
-        const filtered = files.filter(f => isMediaFile(f));
-        if (filtered.length > 0) {
-          topicData[key] = filtered;
-        }
-      }
-    }
-
-    if (Object.keys(topicData).length === 0) {
-      throw new Error('No valid topics found in manifest');
-    }
-
-    topicList = Object.keys(topicData);
-    console.log('✅ Loaded topics:', topicList);
-
-  } catch (error) {
-    console.error('Failed to load topics.json:', error);
-    // Show error message
-    featuredArea.innerHTML = `
-          <div style="color:#fff;text-align:center;padding:40px;font-size:1.2rem;background:rgba(0,0,0,0.3);border-radius:20px;margin:20px;max-width:600px;margin-left:auto;margin-right:auto;">
-            <p style="font-size:2rem;margin-bottom:10px;">⚠️</p>
-            <p><strong>Could not load topics.json</strong></p>
-            <p style="font-size:0.9rem;margin-top:10px;opacity:0.8;">Make sure the file exists in the root folder.</p>
-            <pre style="background:#1a1a2a;padding:12px;border-radius:8px;text-align:left;font-size:0.75rem;margin:15px auto;max-width:320px;overflow-x:auto;color:#d4af37;">
-{
-  "paticca": ["1-slide.png", "2-slide.mp4"],
-  "asubha": ["1-image.jpg", "2-image.png"]
-}
-            </pre>
-          </div>
-        `;
-    totalSlidesSpan.innerText = '0';
-    updateButtonsState();
-    return false;
-  }
-
-  return true;
-}
-
-// ========== BUILD SLIDES ==========
-function buildSlidesForTopic(topicName) {
-  const files = topicData[topicName] || [];
-  if (files.length === 0) {
-    featuredArea.innerHTML = `
-          <div style="color:#fff;text-align:center;padding:40px;font-size:1.2rem;background:rgba(0,0,0,0.3);border-radius:20px;margin:20px;">
-            <p>📁 No slides found in "${topicName}"</p>
-            <p style="font-size:0.9rem;margin-top:10px;">Check topics.json for this topic</p>
-          </div>
-        `;
-    carouselTrack.innerHTML = '';
-    totalSlides = 0;
-    currentSlideIndex = 0;
-    totalSlidesSpan.innerText = '0';
-    updateCounterDisplay();
-    updateButtonsState();
-    return;
-  }
-
-  allSlides = files.map(f => ({ topic: topicName, file: f }));
-  totalSlides = allSlides.length;
-  if (currentSlideIndex >= totalSlides) currentSlideIndex = 0;
-
-  // Build featured area
-  featuredArea.innerHTML = '';
-  for (let i = 0; i < totalSlides; i++) {
-    const slide = document.createElement('div');
-    slide.className = 'slide';
-    if (i === currentSlideIndex) slide.classList.add('active');
-    const frame = document.createElement('div');
-    frame.className = 'image-frame';
-
-    const fileUrl = getFileUrl(topicName, allSlides[i].file);
-    const isVideo = isVideoFile(allSlides[i].file);
-
-    if (isVideo) {
-      const video = document.createElement('video');
-      video.src = fileUrl;
-      video.autoplay = false;
-      video.loop = true;
-      video.muted = true;
-      video.playsInline = true;
-      video.controls = true;
-      video.style.maxWidth = '100%';
-      video.style.maxHeight = '70vh';
-      video.style.width = 'auto';
-      video.style.height = 'auto';
-      video.style.objectFit = 'contain';
-      frame.appendChild(video);
-    } else {
-      const img = document.createElement('img');
-      img.src = fileUrl;
-      img.alt = `${topicName} slide ${i + 1}`;
-      img.onerror = function () {
-        this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"%3E%3Crect fill="%232a2a3a" width="400" height="300"/%3E%3Ctext x="200" y="150" font-family="sans-serif" font-size="20" fill="%23d4af37" text-anchor="middle" dominant-baseline="middle"%3EMissing%3C/text%3E%3C/svg%3E';
-      };
-      frame.appendChild(img);
-    }
-    slide.appendChild(frame);
-    featuredArea.appendChild(slide);
-  }
-
-  totalSlidesSpan.innerText = totalSlides;
-  updateCounterDisplay();
-  updateButtonsState();
-  buildCarouselForTopic(topicName);
-  updateCarouselActive();
-
-  // Update URL with current state
-  if (!isInitializing) {
-    updateURL(topicName, currentSlideIndex);
-  }
-
-  renderTopicList();
-}
-
-function buildCarouselForTopic(topicName) {
-  carouselTrack.innerHTML = '';
-  for (let i = 0; i < totalSlides; i++) {
-    const item = document.createElement('div');
-    item.className = 'carousel-item';
-    if (i === currentSlideIndex) item.classList.add('active');
-
-    const fileUrl = getFileUrl(topicName, allSlides[i].file);
-    const isVideo = isVideoFile(allSlides[i].file);
-
-    if (isVideo) {
-      const thumbDiv = document.createElement('div');
-      thumbDiv.className = 'video-thumb';
-      const video = document.createElement('video');
-      video.src = fileUrl;
-      video.muted = true;
-      video.playsInline = true;
-      video.preload = 'metadata';
-      video.style.width = '100%';
-      video.style.height = '100%';
-      video.style.objectFit = 'cover';
-      video.addEventListener('loadeddata', function () { this.currentTime = 0.1; });
-      video.addEventListener('seeked', function () {
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth || 160;
-        canvas.height = video.videoHeight || 90;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const img = document.createElement('img');
-        img.src = canvas.toDataURL();
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover';
-        thumbDiv.innerHTML = '';
-        thumbDiv.appendChild(img);
-        video.pause();
+  /* Stars / light specks (sparser + warmer than a night sky — heaven glints) */
+  function buildStars() {
+    stars = [];
+    const n = Math.floor(W * H / 3200);
+    for (let i = 0; i < n; i++) {
+      const t = Math.random();
+      let sz, base, speed;
+      if (t < 0.6) { sz = rand(0.25, 0.6); base = rand(0.08, 0.22); speed = rand(0.002, 0.005); }
+      else if (t < 0.88) { sz = rand(0.6, 1.0); base = rand(0.18, 0.42); speed = rand(0.004, 0.008); }
+      else { sz = rand(1.0, 1.6); base = rand(0.4, 0.75); speed = rand(0.007, 0.013); }
+      stars.push({
+        x: rand(0, W), y: rand(0, H * 0.7),
+        sz, base, speed,
+        phase: rand(0, Math.PI * 2),
+        tint: Math.random() < 0.14
+          ? (Math.random() < 0.6 ? C.gold : C.azureDim)
+          : '#FFFFFF',
       });
-      video.load();
-      thumbDiv.appendChild(video);
-      item.appendChild(thumbDiv);
-    } else {
-      const img = document.createElement('img');
-      img.src = fileUrl;
-      img.alt = `thumb ${i + 1}`;
-      img.onerror = function () {
-        this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="70"%3E%3Crect fill="%232a2a3a" width="100" height="70"/%3E%3C/svg%3E';
-      };
-      item.appendChild(img);
-    }
-
-    item.addEventListener('click', (function (idx) {
-      return function () { if (!isFullscreen && !transitionLock) goToSlide(idx); };
-    })(i));
-    carouselTrack.appendChild(item);
-  }
-}
-
-// ========== NAVIGATION ==========
-function goToSlide(index, updateUrlParam = true) {
-  if (transitionLock || totalSlides === 0) return;
-  if (index < 0) index = 0;
-  if (index >= totalSlides) index = totalSlides - 1;
-  if (index === currentSlideIndex) return;
-
-  transitionLock = true;
-  const slides = document.querySelectorAll('.slide');
-  if (!slides.length) { transitionLock = false; return; }
-
-  if (isFullscreen) {
-    slides[currentSlideIndex]?.querySelector('.image-frame')?.classList.remove('fullscreen');
-  }
-  slides[currentSlideIndex]?.classList.remove('active');
-  slides[index]?.classList.add('active');
-  if (isFullscreen) {
-    slides[index]?.querySelector('.image-frame')?.classList.add('fullscreen');
-  }
-
-  currentSlideIndex = index;
-  updateCounterDisplay();
-  updateButtonsState();
-  updateCarouselActive();
-
-  if (updateUrlParam && !isInitializing) {
-    updateURL(currentTopic, currentSlideIndex);
-    // Save to localStorage
-    try { localStorage.setItem('dhammaTalkLastSlide', currentSlideIndex); } catch (e) { }
-  }
-
-  setTimeout(() => { transitionLock = false; }, 500);
-}
-
-function firstSlide() { if (currentSlideIndex !== 0) goToSlide(0); }
-function prevSlide() { if (currentSlideIndex > 0) goToSlide(currentSlideIndex - 1); }
-function nextSlide() { if (currentSlideIndex + 1 < totalSlides) goToSlide(currentSlideIndex + 1); }
-function lastSlide() { if (currentSlideIndex !== totalSlides - 1) goToSlide(totalSlides - 1); }
-
-function jumpToLinked() {
-  if (totalSlides === 0) return;
-  const currentFile = allSlides[currentSlideIndex]?.file || '';
-  const base = extractBaseName(currentFile);
-  if (!base) return;
-  for (let i = 0; i < totalSlides; i++) {
-    if (i !== currentSlideIndex && extractBaseName(allSlides[i].file) === base) {
-      goToSlide(i);
-      return;
     }
   }
-}
 
-function switchTopic(topicName) {
-  if (topicName === currentTopic) { closeTopicModal(); return; }
-  currentTopic = topicName;
-  currentSlideIndex = 0;
-  buildSlidesForTopic(topicName);
-  closeTopicModal();
-  try {
-    localStorage.setItem('dhammaTopic', topicName);
-    localStorage.setItem('dhammaTalkLastSlide', 0);
-  } catch (e) { }
-  // Update URL immediately after switching
-  updateURL(topicName, 0);
-}
+  /* Wispy cloud smears (very faint, drifting) */
+  function buildClouds() {
+    driftClouds = [];
+    for (let i = 0; i < 5; i++) {
+      driftClouds.push({
+        x: rand(W * 0.05, W * 0.95),
+        y: rand(H * 0.08, H * 0.58),
+        rx: rand(W * 0.14, W * 0.26),
+        ry: rand(H * 0.05, H * 0.12),
+        angle: rand(-0.2, 0.2),
+        color: i % 2 === 0 ? C.sky : C.gold,
+        alpha: rand(0.014, 0.03),
+      });
+    }
+  }
 
-// ========== UI UPDATES ==========
-function updateCounterDisplay() {
-  counterDisplay.innerText = totalSlides > 0 ? currentSlideIndex + 1 : 0;
-}
+  /* Shooting light streaks (rays of dharma) */
+  function spawnShooter() {
+    const angle = rand(-0.35, 0.12);
+    const spd = rand(8, 18);
+    shooters.push({
+      x: rand(W * 0.05, W * 0.85),
+      y: rand(0, H * 0.36),
+      vx: Math.cos(angle) * spd,
+      vy: Math.sin(angle) * spd,
+      len: rand(55, 125),
+      op: 1,
+      decay: rand(0.014, 0.025),
+    });
+  }
 
-function updateButtonsState() {
-  firstBtn.disabled = (currentSlideIndex === 0 || totalSlides === 0);
-  prevBtn.disabled = (currentSlideIndex === 0 || totalSlides === 0);
-  nextBtn.disabled = (currentSlideIndex === totalSlides - 1 || totalSlides === 0);
-  lastBtn.disabled = (currentSlideIndex === totalSlides - 1 || totalSlides === 0);
+  /* Paint sky gradient */
+  function drawSky() {
+    const g = ctx.createRadialGradient(W * 0.5, H * 0.22, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.95);
+    g.addColorStop(0, 'rgba(28,46,84,0.97)');
+    g.addColorStop(0.3, 'rgba(16,28,58,0.99)');
+    g.addColorStop(0.7, 'rgba(10,18,42,1)');
+    g.addColorStop(1, 'rgba(7,13,30,1)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  }
 
-  let hasMatch = false;
-  if (totalSlides > 0) {
-    const currentFile = allSlides[currentSlideIndex]?.file || '';
-    const base = extractBaseName(currentFile);
-    if (base) {
-      for (let i = 0; i < totalSlides; i++) {
-        if (i !== currentSlideIndex && extractBaseName(allSlides[i].file) === base) {
-          hasMatch = true;
-          break;
-        }
+  /* Paint cloud smears */
+  function drawClouds() {
+    driftClouds.forEach(c => {
+      ctx.save();
+      ctx.translate(c.x, c.y);
+      ctx.rotate(c.angle);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, Math.max(c.rx, c.ry));
+      g.addColorStop(0, rgba(c.color, c.alpha));
+      g.addColorStop(0.5, rgba(c.color, c.alpha * 0.4));
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, c.rx, c.ry, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+  }
+
+  /* Paint stars/light specks */
+  function drawStars() {
+    frame++;
+    stars.forEach(s => {
+      const op = s.base + Math.sin(frame * s.speed + s.phase) * s.base * 0.5;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.sz, 0, Math.PI * 2);
+      ctx.fillStyle = s.tint === '#FFFFFF'
+        ? `rgba(255,255,255,${op})`
+        : rgba(s.tint, op);
+      ctx.fill();
+
+      if (s.sz > 1.2 && op > 0.5) {
+        const arm = s.sz * 2.6;
+        ctx.strokeStyle = `rgba(255,248,220,${op * 0.3})`;
+        ctx.lineWidth = 0.4;
+        ctx.beginPath();
+        ctx.moveTo(s.x - arm, s.y); ctx.lineTo(s.x + arm, s.y);
+        ctx.moveTo(s.x, s.y - arm); ctx.lineTo(s.x, s.y + arm);
+        ctx.stroke();
       }
+    });
+  }
+
+  /* Paint shooting light-rays */
+  function drawShooters() {
+    shooters = shooters.filter(s => s.op > 0);
+    shooters.forEach(s => {
+      const tx = s.x - s.vx * (s.len / 14);
+      const ty = s.y - s.vy * (s.len / 14);
+      const g = ctx.createLinearGradient(tx, ty, s.x, s.y);
+      g.addColorStop(0, 'rgba(255,255,255,0)');
+      g.addColorStop(1, `rgba(255,244,210,${s.op})`);
+      ctx.beginPath();
+      ctx.moveTo(tx, ty);
+      ctx.lineTo(s.x, s.y);
+      ctx.strokeStyle = g;
+      ctx.lineWidth = s.op * 1.4;
+      ctx.stroke();
+      s.x += s.vx; s.y += s.vy; s.op -= s.decay;
+    });
+    if (frame % 320 === 0 && Math.random() < 0.5) spawnShooter();
+  }
+
+  /* Paint far cloud-sea horizon — reinforces CSS sky layers */
+  function drawCloudSea() {
+    ctx.save();
+    const hg = ctx.createLinearGradient(0, H * 0.72, 0, H);
+    hg.addColorStop(0, 'rgba(191,224,245,0.05)');
+    hg.addColorStop(0.3, 'rgba(62,124,194,0.025)');
+    hg.addColorStop(1, 'rgba(7,13,30,0)');
+    ctx.fillStyle = hg;
+    ctx.fillRect(0, H * 0.72, W, H * 0.28);
+
+    ctx.strokeStyle = 'rgba(255,244,210,0.04)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, H * 0.8);
+    let px = 0;
+    while (px < W) {
+      const step = rand(10, 24);
+      const ht = rand(H * 0.76, H * 0.85);
+      ctx.lineTo(px, ht);
+      px += step;
     }
+    ctx.lineTo(W, H);
+    ctx.lineTo(0, H);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(10,18,40,0.28)';
+    ctx.fill();
+    ctx.restore();
   }
-  linkBtn.disabled = !hasMatch;
-}
 
-function updateCarouselActive() {
-  const items = document.querySelectorAll('.carousel-item');
-  items.forEach((item, idx) => {
-    if (idx === currentSlideIndex) item.classList.add('active');
-    else item.classList.remove('active');
+  function animate() {
+    ctx.clearRect(0, 0, W, H);
+    drawSky();
+    drawClouds();
+    drawStars();
+    drawShooters();
+    drawCloudSea();
+    raf = requestAnimationFrame(animate);
+  }
+
+  resize();
+  buildStars();
+  buildClouds();
+  animate();
+
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      cancelAnimationFrame(raf);
+      resize(); buildStars(); buildClouds(); animate();
+    }, 200);
   });
-  const activeItem = items[currentSlideIndex];
-  if (activeItem && !isFullscreen) {
-    activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  }
-}
+})();
 
-// ========== TOPIC MODAL ==========
-function renderTopicList() {
-  topicListEl.innerHTML = '';
-  if (topicList.length === 0) {
-    topicListEl.innerHTML = `
-          <div class="topic-empty">
-            <p>📂 No topics loaded</p>
-            <p style="font-size:0.8rem;margin-top:8px;">Check topics.json</p>
-          </div>
-        `;
-    return;
-  }
-  topicList.forEach(name => {
-    const div = document.createElement('div');
-    div.className = 'topic-item' + (name === currentTopic ? ' active' : '');
-    const count = topicData[name]?.length || 0;
-    div.innerHTML = `<span>📁 ${name}</span><span class="badge">${count}</span>`;
-    div.addEventListener('click', () => switchTopic(name));
-    topicListEl.appendChild(div);
-  });
-}
 
-function openTopicModal() {
-  renderTopicList();
-  topicOverlay.classList.add('open');
-}
+/* ══════════════════════════════════════════════════════════════════════
+   2. LIGHT MOTES (fireflies analogue — golden motes drifting upward)
+   ══════════════════════════════════════════════════════════════════════ */
+(function initMotes() {
+  const container = document.getElementById('motes');
+  if (!container) return;
+  const count = window.innerWidth < 768 ? 10 : 20;
 
-function closeTopicModal() {
-  topicOverlay.classList.remove('open');
-}
-
-// ========== FULLSCREEN ==========
-function toggleFullscreen() {
-  const slides = document.querySelectorAll('.slide');
-  const activeSlide = slides[currentSlideIndex];
-  const imageFrame = activeSlide?.querySelector('.image-frame');
-  isFullscreen = !isFullscreen;
-  if (isFullscreen) {
-    bodyEl.classList.add('fullscreen-bg');
-    if (imageFrame) imageFrame.classList.add('fullscreen');
-    navControls.classList.add('hidden');
-    slideCounter.classList.add('hidden');
-    carouselSection.classList.add('hidden');
-  } else {
-    bodyEl.classList.remove('fullscreen-bg');
-    if (imageFrame) imageFrame.classList.remove('fullscreen');
-    navControls.classList.remove('hidden');
-    slideCounter.classList.remove('hidden');
-    carouselSection.classList.remove('hidden');
-  }
-}
-
-// ========== COUNTER EDIT ==========
-function initTypeableCounter() {
-  const parent = document.getElementById('slideCounter');
-  const displaySpan = counterDisplay;
-  displaySpan.addEventListener('click', (e) => {
-    if (editMode || isFullscreen || totalSlides === 0) return;
-    e.stopPropagation();
-    editMode = true;
-    const input = document.createElement('input');
-    input.type = 'number';
-    input.className = 'counter-input';
-    input.value = currentSlideIndex + 1;
-    input.min = 1;
-    input.max = totalSlides;
-    input.step = 1;
-    parent.replaceChild(input, displaySpan);
-    input.focus();
-    input.select();
-
-    function commit() {
-      if (!editMode) return;
-      let val = parseInt(input.value, 10);
-      if (isNaN(val)) val = currentSlideIndex + 1;
-      val = Math.max(1, Math.min(totalSlides, val));
-      const newIndex = val - 1;
-      parent.replaceChild(displaySpan, input);
-      editMode = false;
-      if (newIndex !== currentSlideIndex) goToSlide(newIndex);
-      else updateCounterDisplay();
+  for (let i = 0; i < count; i++) {
+    const m = document.createElement('div');
+    m.className = 'mote';
+    const x = Math.random() * 100;
+    const y = 30 + Math.random() * 65;
+    const dur = 6 + Math.random() * 12;
+    const del = Math.random() * 10;
+    const dx = (Math.random() - 0.5) * 80;
+    const dy = -(20 + Math.random() * 80);
+    const dx2 = (Math.random() - 0.5) * 60;
+    const dy2 = -(40 + Math.random() * 100);
+    if (Math.random() < 0.3) {
+      m.style.background = '#5FA3E8';
+      m.style.boxShadow = '0 0 6px 2px #5FA3E8';
     }
-    input.addEventListener('blur', commit);
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        commit();
-      } else if (e.key === 'Escape') {
-        parent.replaceChild(displaySpan, input);
-        editMode = false;
-        updateCounterDisplay();
+    m.style.cssText += `
+      left: ${x}%; top: ${y}%;
+      --mt-dur: ${dur}s;
+      --mt-delay: ${del}s;
+      --mt-dx: ${dx}px;
+      --mt-dy: ${dy}px;
+      --mt-dx2: ${dx2}px;
+      --mt-dy2: ${dy2}px;
+      animation-delay: ${del}s;
+      animation-duration: ${dur}s;
+    `;
+    container.appendChild(m);
+  }
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   3. LOTUS PETALS (drifting downward, gentle)
+   ══════════════════════════════════════════════════════════════════════ */
+(function initPetals() {
+  const container = document.getElementById('petals');
+  if (!container) return;
+  const blooms = ['🌸', '🌺', '🌼', '🪷', '✿'];
+  const count = window.innerWidth < 768 ? 6 : 12;
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'petal-fall';
+    el.textContent = blooms[Math.floor(Math.random() * blooms.length)];
+    const sz = 0.8 + Math.random() * 0.7;
+    el.style.cssText = `
+      left:${Math.random() * 100}%;
+      --pf-sz:${sz}rem;
+      --pf-dur:${18 + Math.random() * 22}s;
+      --pf-delay:${-Math.random() * 32}s;
+      --pf-drift:${(Math.random() - 0.5) * 100}px;
+      --pf-spin:${(Math.random() > 0.5 ? 1 : -1) * (80 + Math.random() * 180)}deg;
+    `;
+    container.appendChild(el);
+  }
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   4. CUSTOM CURSOR
+   ══════════════════════════════════════════════════════════════════════ */
+(function initCursor() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const el = document.createElement('div');
+  el.id = 'cursor';
+  el.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(el);
+  document.body.style.cursor = 'none';
+
+  let cx = -100, cy = -100, tx = -100, ty = -100;
+
+  document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function tick() {
+    cx = lerp(cx, tx, 0.16);
+    cy = lerp(cy, ty, 0.16);
+    el.style.left = cx + 'px';
+    el.style.top = cy + 'px';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  document.querySelectorAll('a,button,[role="button"]').forEach(node => {
+    node.style.cursor = 'none';
+    node.addEventListener('mouseenter', () => el.classList.add('hover'));
+    node.addEventListener('mouseleave', () => el.classList.remove('hover'));
+  });
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   5. NAVIGATION
+   ══════════════════════════════════════════════════════════════════════ */
+(function initNav() {
+  const nav = document.getElementById('nav');
+  const ham = document.getElementById('hamburger');
+  const links = document.getElementById('nav-links');
+  if (!nav || !ham || !links) return;
+
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      ham.classList.remove('open');
+      links.classList.remove('open');
+    });
+  });
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   6. HERO ENTRY ANIMATION
+   ══════════════════════════════════════════════════════════════════════ */
+(function initHero() {
+  const kicker = document.querySelector('.hero__kicker');
+  if (kicker) setTimeout(() => {
+    kicker.style.opacity = '1';
+    kicker.style.animation = 'fade-up 0.8s var(--ease-heaven) forwards';
+  }, 300);
+
+  document.querySelectorAll('.hero__hl-line').forEach(line => {
+    const d = parseInt(line.dataset.d || 0);
+    setTimeout(() => line.classList.add('vis'), 500 + d);
+  });
+
+  document.querySelectorAll('.reveal-fade[data-d]').forEach(el => {
+    if (!el.closest('.hero')) return;
+    const d = parseInt(el.dataset.d || 0);
+    setTimeout(() => el.classList.add('vis'), 500 + d);
+  });
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   7. INTERSECTION OBSERVER — scroll reveals + counters
+   ══════════════════════════════════════════════════════════════════════ */
+(function initReveal() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('vis');
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -36px 0px' });
+
+  document.querySelectorAll('.reveal-fade, .reveal-card, .reveal-up').forEach(el => {
+    if (el.closest('.hero')) return;
+    const d = parseInt(el.dataset.d || 0);
+    if (d) el.style.transitionDelay = (d / 1000) + 's';
+    obs.observe(el);
+  });
+
+  [
+    '.pcard', '.how__step', '.tcard', '.acard',
+    '.fcol', '.footer__brand', '.retreat-item', '.mcard', '.talk-card',
+  ].forEach(sel => {
+    document.querySelectorAll(sel).forEach((el, i) => {
+      if (!el.classList.contains('reveal-fade') && !el.classList.contains('reveal-card')) {
+        el.classList.add('reveal-fade');
+        el.style.transitionDelay = (i * 0.06) + 's';
+        if (!el.closest('.hero')) obs.observe(el);
       }
     });
   });
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   8. ANIMATED COUNTERS
+   ══════════════════════════════════════════════════════════════════════ */
+(function initCounters() {
+  function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+
+  function animateNum(el, target, dur = 2000) {
+    const start = performance.now();
+    (function step(now) {
+      const p = Math.min((now - start) / dur, 1);
+      el.textContent = Math.floor(easeOut(p) * target).toLocaleString();
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString();
+    })(start);
+  }
+
+  const cObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const t = parseInt(e.target.dataset.target, 10);
+      if (!isNaN(t)) animateNum(e.target, t);
+      cObs.unobserve(e.target);
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-target]').forEach(el => cObs.observe(el));
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   9. CAROUSEL FACTORY
+   ══════════════════════════════════════════════════════════════════════ */
+function makeCarousel({ trackId, prevId, nextId, dotsId, cardSel, perView, gapPx, autoplay }) {
+  const track = document.getElementById(trackId);
+  const prev = document.getElementById(prevId);
+  const next = document.getElementById(nextId);
+  const dotsEl = document.getElementById(dotsId);
+  if (!track || !prev || !next || !dotsEl) return;
+
+  const cards = [...track.querySelectorAll(cardSel)];
+  if (!cards.length) return;
+
+  const maxIdx = Math.max(0, cards.length - perView);
+  let cur = 0;
+
+  for (let i = 0; i <= maxIdx; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => go(i));
+    dotsEl.appendChild(d);
+  }
+
+  function cardW() { return cards[0].offsetWidth + gapPx; }
+
+  function go(idx) {
+    cur = Math.max(0, Math.min(idx, maxIdx));
+    track.style.transform = `translateX(-${cur * cardW()}px)`;
+    dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  }
+
+  prev.addEventListener('click', () => go(cur - 1));
+  next.addEventListener('click', () => go(cur + 1));
+
+  let tx0 = 0;
+  track.parentElement.addEventListener('touchstart', e => { tx0 = e.changedTouches[0].clientX; }, { passive: true });
+  track.parentElement.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx0;
+    if (Math.abs(dx) > 44) go(dx < 0 ? cur + 1 : cur - 1);
+  }, { passive: true });
+
+  if (autoplay) {
+    setInterval(() => go(cur < maxIdx ? cur + 1 : 0), autoplay);
+  }
 }
 
-// ========== KEYBOARD ==========
-function handleKeydown(e) {
-  if (transitionLock || editMode) return;
-  if (topicOverlay.classList.contains('open')) {
-    if (e.key === 'Escape') { closeTopicModal(); return; }
-    return;
-  }
-  if (e.key === 'f' || e.key === 'F') {
-    e.preventDefault();
-    toggleFullscreen();
-    return;
-  }
-  if (e.key === 'ArrowRight') {
-    e.preventDefault();
-    nextSlide();
-  } else if (e.key === 'ArrowLeft') {
-    e.preventDefault();
-    prevSlide();
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault();
-    firstSlide();
-  } else if (e.key === 'ArrowDown') {
-    e.preventDefault();
-    lastSlide();
-  } else if (e.key === ' ' || e.key === 'Space') {
-    if (!linkBtn.disabled) {
-      e.preventDefault();
-      jumpToLinked();
-    }
-  }
-}
+// Journey carousel
+makeCarousel({
+  trackId: 'journey-track', prevId: 'j-prev', nextId: 'j-next', dotsId: 'j-dots',
+  cardSel: '.ccard', perView: Math.max(1, Math.floor(window.innerWidth / 348)),
+  gapPx: 24, autoplay: 6000,
+});
 
-// ========== POPSTATE HANDLER ==========
-function handlePopState() {
-  const urlData = getSlideFromURL();
+// Quotes carousel
+makeCarousel({
+  trackId: 'quote-track', prevId: 'q-prev', nextId: 'q-next', dotsId: 'q-dots',
+  cardSel: '.tcard', perView: Math.max(1, Math.floor(window.innerWidth / 588)),
+  gapPx: 24, autoplay: 0,
+});
 
-  // If no URL params or invalid, don't do anything (stay on current)
-  if (!urlData) {
-    return;
-  }
 
-  const { topic, slide } = urlData;
+/* ══════════════════════════════════════════════════════════════════════
+   10. PORTRAIT / SUN PARALLAX + EYE TRACKING
+   ══════════════════════════════════════════════════════════════════════ */
+(function initPortraitInteractions() {
+  const portraitWrap = document.querySelector('.hero-portrait-wrap');
 
-  // Check if the topic exists
-  if (topic && topicData[topic]) {
-    const slideIndex = Math.min(slide - 1, topicData[topic].length - 1);
-    const validSlide = Math.max(0, slideIndex);
-
-    if (topic !== currentTopic) {
-      // Switching topics
-      currentTopic = topic;
-      currentSlideIndex = validSlide;
-      buildSlidesForTopic(topic);
-      // Don't update URL again (it's already in the popstate)
-    } else {
-      // Same topic, different slide
-      if (validSlide !== currentSlideIndex) {
-        goToSlide(validSlide, false);
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking || !portraitWrap) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        portraitWrap.style.setProperty('--portrait-shift', `${y * 0.06}px`);
       }
-    }
-  }
-}
+      ticking = false;
+    });
+  }, { passive: true });
 
-// ========== INIT ==========
-async function init() {
-  // Show loading
-  featuredArea.innerHTML = `
-        <div style="color:#fff;text-align:center;padding:40px;font-size:1.2rem;">
-          <div class="loading-spinner">📂 Loading topics.json...</div>
-        </div>
-      `;
-
-  const loaded = await loadTopics();
-  if (!loaded) return;
-
-  // Clean up URL if needed
-  const urlCleaned = cleanURL();
-
-  // Get slide info from URL (after cleaning)
-  const urlData = getSlideFromURL();
-
-  let startTopic = '';
-  let startSlide = 0;
-
-  if (urlData) {
-    // We have valid URL params
-    startTopic = urlData.topic;
-    startSlide = urlData.slide - 1; // 0-indexed
-
-    // Validate
-    if (!topicData[startTopic]) {
-      // Topic doesn't exist, fallback
-      startTopic = topicList[0];
-      startSlide = 0;
-    } else {
-      // Ensure slide is within bounds
-      const maxSlide = topicData[startTopic].length - 1;
-      startSlide = Math.min(startSlide, maxSlide);
-      startSlide = Math.max(0, startSlide);
-    }
-  } else {
-    // No URL params or invalid, use localStorage or defaults
-    try {
-      const savedTopic = localStorage.getItem('dhammaTopic');
-      const savedSlide = parseInt(localStorage.getItem('dhammaTalkLastSlide'), 10);
-
-      if (savedTopic && topicData[savedTopic]) {
-        startTopic = savedTopic;
-        startSlide = !isNaN(savedSlide) && savedSlide >= 0 ? savedSlide : 0;
-
-        // Ensure slide is within bounds
-        const maxSlide = topicData[startTopic].length - 1;
-        startSlide = Math.min(startSlide, maxSlide);
-        startSlide = Math.max(0, startSlide);
-      } else {
-        startTopic = topicList[0];
-        startSlide = 0;
-      }
-    } catch (e) {
-      startTopic = topicList[0];
-      startSlide = 0;
-    }
-
-    // Update URL with defaults
-    isInitializing = false;
-    updateURL(startTopic, startSlide, true);
-    isInitializing = true;
-  }
-
-  currentTopic = startTopic;
-  currentSlideIndex = startSlide;
-
-  // Build slides
-  buildSlidesForTopic(currentTopic);
-
-  // Now mark initialization as complete
-  isInitializing = false;
-
-  // Ensure URL is correct after building
-  updateURL(currentTopic, currentSlideIndex, true);
-
-  initTypeableCounter();
-  updateButtonsState();
-  updateCarouselActive();
-
-  // Event listeners
-  window.addEventListener('keydown', handleKeydown);
-  window.addEventListener('popstate', handlePopState);
-
-  topicBtn.addEventListener('click', openTopicModal);
-  topicCloseBtn.addEventListener('click', closeTopicModal);
-  topicOverlay.addEventListener('click', (e) => {
-    if (e.target === topicOverlay) closeTopicModal();
+  // Eye follow on sun mascots
+  document.addEventListener('mousemove', e => {
+    document.querySelectorAll('.sm-face').forEach(face => {
+      const r = face.getBoundingClientRect();
+      const fcx = r.left + r.width / 2;
+      const fcy = r.top + r.height / 2;
+      const dx = e.clientX - fcx;
+      const dy = e.clientY - fcy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const max = 1.4;
+      const mx = dist > 0 ? (dx / dist) * Math.min(dist * 0.025, max) : 0;
+      const my = dist > 0 ? (dy / dist) * Math.min(dist * 0.025, max) : 0;
+      face.querySelectorAll('.sm-eye').forEach(eye => {
+        eye.style.transform = `translate(${mx}px,${my}px)`;
+      });
+    });
   });
+})();
 
-  firstBtn.addEventListener('click', firstSlide);
-  prevBtn.addEventListener('click', prevSlide);
-  linkBtn.addEventListener('click', jumpToLinked);
-  nextBtn.addEventListener('click', nextSlide);
-  lastBtn.addEventListener('click', lastSlide);
 
-  console.log(`📚 Loaded ${topicList.length} topics:`, topicList);
-  console.log(`📄 Current: ${currentTopic} (${totalSlides} slides), slide: ${currentSlideIndex + 1}`);
-}
+/* ══════════════════════════════════════════════════════════════════════
+   11. SUN MASCOT BLINK
+   ══════════════════════════════════════════════════════════════════════ */
+(function initBlink() {
+  function blink(face) {
+    face.querySelectorAll('.sm-eye').forEach(e => {
+      const base = e.style.transform || '';
+      e.style.transform = base + ' scaleY(0.08)';
+      setTimeout(() => { e.style.transform = base; }, 110);
+    });
+  }
+  function scheduleBlink(face) {
+    setTimeout(() => { blink(face); scheduleBlink(face); }, 3000 + Math.random() * 4500);
+  }
+  document.querySelectorAll('.sm-face').forEach(face => scheduleBlink(face));
+})();
 
-init();
+
+/* ══════════════════════════════════════════════════════════════════════
+   12. CARD AMBIENT GLOW (mouse-tracked radial)
+   ══════════════════════════════════════════════════════════════════════ */
+(function initCardGlow() {
+  const selector = '.ccard, .pcard, .tcard, .mcard, .acard, .talk-card, .retreat-item, .topic-card';
+  document.querySelectorAll(selector).forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * 100;
+      const y = ((e.clientY - r.top) / r.height) * 100;
+      card.style.backgroundImage = `radial-gradient(circle at ${x}% ${y}%, rgba(212,168,50,0.06) 0%, transparent 55%)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.backgroundImage = ''; });
+  });
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   13. SPARK BURST on primary button hover
+   ══════════════════════════════════════════════════════════════════════ */
+(function initSparks() {
+  const kf = document.createElement('style');
+  kf.textContent = `
+    @keyframes spark-out {
+      0%   { transform: translate(0,0) scale(0); opacity:1; }
+      70%  { opacity:0.8; }
+      100% { transform: translate(var(--spx),var(--spy)) scale(1.4); opacity:0; }
+    }
+  `;
+  document.head.appendChild(kf);
+
+  document.querySelectorAll('.btn--sky').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      for (let i = 0; i < 7; i++) {
+        const sp = document.createElement('span');
+        sp.textContent = Math.random() < 0.5 ? '✦' : '✧';
+        const spx = (Math.random() - 0.5) * 48;
+        const spy = (Math.random() - 0.7) * 48;
+        sp.style.cssText = `
+          position:absolute;
+          color:${Math.random() < 0.5 ? C.goldBright : C.skyBright};
+          font-size:${7 + Math.random() * 7}px;
+          pointer-events:none; z-index:20;
+          left:${15 + Math.random() * 70}%; top:${10 + Math.random() * 80}%;
+          --spx:${spx}px; --spy:${spy}px;
+          animation: spark-out 0.65s ease forwards;
+          filter: drop-shadow(0 0 3px ${C.gold});
+        `;
+        btn.appendChild(sp);
+        setTimeout(() => sp.remove(), 700);
+      }
+    });
+  });
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   14. ACTIVE NAV HIGHLIGHT
+   ══════════════════════════════════════════════════════════════════════ */
+(function initNavHighlight() {
+  const sections = document.querySelectorAll('section[id]');
+  const navAs = document.querySelectorAll('.nav__links a[href^="#"]');
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navAs.forEach(a => {
+          a.style.color = a.getAttribute('href') === '#' + e.target.id
+            ? C.skyBright : '';
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => obs.observe(s));
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   15. LIGHT WASH SCROLL RESPONSE
+   ══════════════════════════════════════════════════════════════════════ */
+(function initWashParallax() {
+  const wash = document.querySelector('.light-wash');
+  if (!wash) return;
+  window.addEventListener('scroll', () => {
+    const ratio = Math.min(window.scrollY / (document.body.scrollHeight * 0.25), 1);
+    wash.style.opacity = 0.5 + ratio * 0.4;
+  }, { passive: true });
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   16. KEYBOARD SHORTCUT — jump to visual teachings
+   ══════════════════════════════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if (e.key === 't' || e.key === 'T') window.location.href = 'dhamma/index.html';
+});
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   17. SMOOTH FADE-IN ON LOAD
+   ══════════════════════════════════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  document.body.style.opacity = '0';
+  document.body.style.transition = 'opacity 0.9s ease';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.body.style.opacity = '1';
+  }));
+});
+
+console.log('☸ Tāvatiṃsa — the heaven realm of the Thirty-Three.');
+console.log('🪷 Sabbe sattā sukhitā hontu — May all beings be happy.');

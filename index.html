@@ -2,49 +2,803 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <link rel="icon" type="image/jpeg" href="wheel.jpeg" />
-  <title>Dhamma Slides · topics.json</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ven. Sayadaw Suvanna — Paauk Tawya · A Teacher You Can Sit With</title>
+  <meta name="description" content="Sayadaw Suvanna teaches the Theravāda path with a smile — Samatha, Vipassanā, and the Abhidhamma — offered freely, with patience and loving-kindness, to anyone willing to begin." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='sunGold' cx='40%25' cy='35%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23FFFBE8'/%3E%3Cstop offset='55%25' stop-color='%23F0CC60'/%3E%3Cstop offset='100%25' stop-color='%23D4A832'/%3E%3C/radialGradient%3E%3Cfilter id='glow' x='-40%25' y='-40%25' width='180%25' height='180%25'%3E%3CfeGaussianBlur stdDeviation='3.5' result='blur'/%3E%3CfeMerge%3E%3CfeMergeNode in='blur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='42' fill='url%28%23sunGold%29' filter='url%28%23glow%29'/%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%23D4A832' stroke-width='0.8' opacity='0.5'/%3E%3C/svg%3E" />
 </head>
 <body>
 
-  <div class="slideshow-container">
-    <div class="featured-area" id="featuredArea"></div>
-    <div class="carousel-section" id="carouselSection">
-      <div class="carousel-container" id="carouselContainer">
-        <div class="carousel-track" id="carouselTrack"></div>
+  <canvas id="heaven-canvas"></canvas>
+  <div class="light-wash"></div>
+  <div class="motes" id="motes"></div>
+  <div class="petals" id="petals"></div>
+
+  <!-- ══════════════════════════ NAV ══════════════════════════════════════ -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#home" class="nav__logo">
+        <div class="sun-mascot sun-mascot--nav" id="nav-sun">
+          <div class="sm-face">
+            <div class="sm-eye sm-eye--l"></div>
+            <div class="sm-eye sm-eye--r"></div>
+            <div class="sm-smile"></div>
+            <div class="sm-blush sm-blush--l"></div>
+            <div class="sm-blush sm-blush--r"></div>
+          </div>
+          <div class="sm-halo"></div>
+        </div>
+        <div class="nav__wordmark">
+          <span class="nav__name">Ven. Suvanna</span>
+          <span class="nav__tagline-tiny">Paauk Tawya · Theravāda</span>
+        </div>
+      </a>
+
+      <ul class="nav__links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#journey">Journey</a></li>
+        <li><a href="#specializations">Specializations</a></li>
+        <li><a href="#talks">Dhamma Talks</a></li>
+        <li><a href="#retreats">Retreats</a></li>
+        <li><a href="dhamma/index.html" class="nav__pill">📖 Teachings</a></li>
+      </ul>
+
+      <button class="hamburger" id="hamburger" aria-label="menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════ HERO ════════════════════════════════════ -->
+  <section class="hero" id="home">
+
+    <div class="sky-layer sky-bg"></div>
+    <div class="sky-layer sky-mid"></div>
+    <div class="sky-layer sky-fg"></div>
+
+    <div class="sunbeam-container">
+      <div class="sunbeam sb1"></div>
+      <div class="sunbeam sb2"></div>
+      <div class="sunbeam sb3"></div>
+    </div>
+
+    <div class="cloud-mist"></div>
+
+    <div class="hero__stage">
+      <div class="hero__content">
+        <p class="hero__kicker reveal-fade" data-d="0">High above the clouds. <br class="mobile-only"> Within the Tāvatiṃsa light.</p>
+        <h1 class="hero__headline">
+          <span class="hero__hl-line reveal-up" data-d="100">A Mind That Can Be Purified.</span>
+          <span class="hero__hl-line hero__hl-grad reveal-up" data-d="220">A Path That Is Already Clear.</span>
+        </h1>
+        <p class="hero__body reveal-fade" data-d="480">
+          "It only asks of you sincerity to begin —<br/>
+          and gentleness enough to keep returning."<br/>
+          Forty years in the Dhamma. Offered to you with a smile.
+        </p>
+        <div class="hero__cta-row reveal-fade" data-d="580">
+          <a href="#specializations" class="btn btn--sky">
+            <span>Explore the Teachings</span>
+            <span class="btn__lotus">🪷</span>
+          </a>
+          <a href="#about" class="btn btn--ghost">Meet Sayadaw Suvanna</a>
+        </div>
+        <div class="hero__proof reveal-fade" data-d="680">
+          <div class="proof-pill">
+            <span class="proof-dot"></span>
+            <span>40+ years walking the Paauk path</span>
+          </div>
+          <div class="proof-pill">
+            <span class="proof-dot proof-dot--gold"></span>
+            <span>Teaching freely across 6 countries</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__visual" aria-hidden="true">
+        <div class="hero-portrait-wrap">
+          <div class="hero-portrait-beam"></div>
+          <div class="hero-portrait" id="hero-portrait">
+            <div class="hero-portrait__halo halo-r1"></div>
+            <div class="hero-portrait__halo halo-r2"></div>
+            <div class="hero-portrait__halo halo-r3"></div>
+            <div class="hero-portrait__glow"></div>
+            <img src="vensuvanna.png" alt="Ven. Sayadaw Suvanna" class="hero-portrait__img"
+                 onerror="this.src='https://placehold.co/440x440/1a3a6e/f0cc60?text=%F0%9F%99%8F'" />
+            <div class="mm-shine ms1">✦</div>
+            <div class="mm-shine ms2">✧</div>
+            <div class="mm-shine ms3">✦</div>
+            <div class="mm-shine ms4">✧</div>
+          </div>
+          <div class="portrait-pool-reflection"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="nav-controls">
-    <button id="topicBtn">📂 Topics</button>
-    <button id="firstBtn">⏮️</button>
-    <button id="prevBtn">⬅️</button>
-    <button id="linkBtn">🔄</button>
-    <button id="nextBtn">➡️</button>
-    <button id="lastBtn">⏭️</button>
-  </div>
+    <div class="hero__scroll">
+      <div class="scroll-stem"></div>
+      <span>step into the light</span>
+    </div>
+  </section>
 
-  <div class="slide-counter">
-    <span class="counter-display" id="counterDisplay">1</span>
-    <span class="counter-sep">/</span>
-    <span id="totalSlidesSpan">0</span>
-    <a href="https://github.com/rex-9/vensuvanna" target="_blank" class="github-link">
-      <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
-        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-      </svg>
-    </a>
-  </div>
-
-  <div class="topic-overlay" id="topicOverlay">
-    <div class="topic-modal">
-      <h2>📖 Select Topic</h2>
-      <div class="topic-list" id="topicList"></div>
-      <button class="topic-close" id="topicCloseBtn">✕ Close</button>
+  <!-- ══════════════════════════ METTĀ RIBBON / TICKER ════════════════════ -->
+  <div class="ticker-wrap">
+    <div class="ticker-inner" id="ticker">
+      <span>☸ Sabbe sattā sukhitā hontu — May all beings be happy</span>
+      <span>🪷 Nguyện tất cả chúng sanh được an lạc</span>
+      <span>☸ Every teaching offered freely, on a dāna basis</span>
+      <span>🪷 No question too small. No yogi turned away.</span>
+      <span>☸ Forty years of practice, offered with a smile</span>
+      <span>🪷 The Paauk method — breath to Nibbāna</span>
+      <span>☸ Mettā is not manufactured. It is allowed.</span>
+      <span>🪷 Teaching in Myanmar, Thailand, Vietnam & beyond</span>
+      <span>☸ Sabbe sattā sukhitā hontu — May all beings be happy</span>
+      <span>🪷 Nguyện tất cả chúng sanh được an lạc</span>
+      <span>☸ Every teaching offered freely, on a dāna basis</span>
+      <span>🪷 No question too small. No yogi turned away.</span>
+      <span>☸ Forty years of practice, offered with a smile</span>
+      <span>🪷 The Paauk method — breath to Nibbāna</span>
     </div>
   </div>
+
+  <!-- ══════════════════════════ ABOUT / PROMISE ═══════════════════════════ -->
+  <section class="promise" id="about">
+    <div class="container">
+      <div class="eyebrow">A Teacher You Can Sit With</div>
+      <h2 class="section-title">
+        Warm. Unhurried.<br/>
+        Endlessly <em>patient</em>.<br/>
+        <span class="grad-text">Easy to approach.</span>
+      </h2>
+      <p class="section-body">
+        Born in Myanmar, Ven. Sayadaw Suvanna ordained as a novice at a young age and devoted his life to the Pāli scriptures and intensive meditation under the revered Paauk Tawya Sayadaw. Decades later, he teaches with a rare combination — rigorous in method, endlessly compassionate in spirit. He never rushes a student. He never discourages a question. He holds, with the quiet confidence of deep experience, the truth that every person already carries the seed of awakening.
+      </p>
+
+      <div class="promise__cards">
+
+        <div class="pcard reveal-card" data-d="0">
+          <div class="pcard__icon">
+            <div class="lotus-icon">🪷</div>
+          </div>
+          <h3>Every teaching, offered freely.</h3>
+          <p>Sayadaw Suvanna's retreats and guidance are offered on a dāna basis — not as a transaction, but as a simple, loving agreement: come sincerely, and you will receive everything the tradition has to give. The Dhamma has no price.</p>
+          <div class="pcard__bar"></div>
+        </div>
+
+        <div class="pcard pcard--lit reveal-card" data-d="120">
+          <div class="pcard__icon">
+            <div class="pcard__top">
+              <div class="sun-mascot sun-mascot--card">
+                <div class="sm-face">
+                  <div class="sm-eye sm-eye--l"></div>
+                  <div class="sm-eye sm-eye--r"></div>
+                  <div class="sm-smile"></div>
+                  <div class="sm-blush sm-blush--l"></div>
+                  <div class="sm-blush sm-blush--r"></div>
+                </div>
+              </div>
+              <div class="pcard__badge">His Deepest Wish</div>
+            </div>
+          </div>
+          <h3>You already carry the seed of awakening.</h3>
+          <p>Whatever stage you are at — your first sit or your fortieth year — Sayadaw meets you exactly there, with kindness first and teaching second, always. Nothing about you needs fixing before you begin.</p>
+          <div class="pcard__bar"></div>
+        </div>
+
+        <div class="pcard reveal-card" data-d="240">
+          <div class="pcard__icon">
+            <div class="sun-icon-simple"></div>
+          </div>
+          <h3>Sincerity is the only requirement.</h3>
+          <p>He asks for nothing but honest effort and a gentle willingness to keep returning. The path itself does the work — patience, breath by breath, sit by sit, like the slow turning of the dawn.</p>
+          <div class="pcard__bar"></div>
+        </div>
+
+      </div>
+
+      <div class="heaven-stats reveal-fade" data-d="0">
+        <div class="hstat">
+          <span class="hstat__num" data-target="40">0</span>
+          <span class="hstat__label">Years in the Dhamma</span>
+        </div>
+        <div class="hstat__div">☸</div>
+        <div class="hstat">
+          <span class="hstat__num" data-target="6">0</span>
+          <span class="hstat__label">Countries taught in</span>
+        </div>
+        <div class="hstat__div">☸</div>
+        <div class="hstat">
+          <span class="hstat__num" data-target="9">0</span>
+          <span class="hstat__label">Specializations offered</span>
+        </div>
+        <div class="hstat__div">☸</div>
+        <div class="hstat">
+          <span class="hstat__num" data-target="100">0</span>
+          <span class="hstat__label">% freely given, always</span>
+        </div>
+      </div>
+
+      <div class="about-cards reveal-fade" data-d="0">
+        <div class="acard"><div class="acard-icon">📖</div><h4>Pāli Scholar</h4><p>Deep mastery of the Tipiṭaka, Abhidhamma, and the Theravāda commentarial tradition.</p></div>
+        <div class="acard"><div class="acard-icon">🧘</div><h4>Meditation Guide</h4><p>Over 20 years guiding yogis through samatha and vipassanā, in retreat and in daily life.</p></div>
+        <div class="acard"><div class="acard-icon">🌏</div><h4>Global Presence</h4><p>Teachings across Myanmar, Thailand, Sri Lanka, Vietnam, Malaysia, Europe & the USA.</p></div>
+        <div class="acard"><div class="acard-icon">🤝</div><h4>Open Door</h4><p>Known for his easy laughter and patience to explain the same teaching ten different ways.</p></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ THE THREE TRAININGS ══════════════════════ -->
+  <section class="how" id="threefold">
+    <div class="container">
+      <div class="eyebrow">The Ground Beneath Every Step</div>
+      <h2 class="section-title">Tender as a lotus bud.<br/><span class="grad-text">Steady as the sky above.</span></h2>
+      <p class="section-body">The entire path of the Buddha rests on three trainings that support each other like the legs of a lamp — each one making the others possible.</p>
+
+      <div class="how__steps">
+
+        <div class="how__step reveal-fade" data-d="0">
+          <div class="step-num">I</div>
+          <div class="step-sun"><div class="sun-mascot sun-mascot--step"><div class="sm-face"><div class="sm-eye sm-eye--l"></div><div class="sm-eye sm-eye--r"></div><div class="sm-smile"></div><div class="sm-blush sm-blush--l"></div><div class="sm-blush sm-blush--r"></div></div></div></div>
+          <h3>Sīla — Virtue & Ethics</h3>
+          <p>The cool, stable ground beneath every step of the path. Right speech, right action, right livelihood — not burdens to carry, but gifts we offer to every being whose life ours touches. Sayadaw teaches precepts as acts of love, not restriction.</p>
+        </div>
+
+        <div class="how__connector">
+          <div class="connector-line"></div>
+          <div class="connector-lotus">🪷</div>
+        </div>
+
+        <div class="how__step reveal-fade" data-d="120">
+          <div class="step-num">II</div>
+          <div class="step-sun"><div class="sun-mascot sun-mascot--step"><div class="sm-face"><div class="sm-eye sm-eye--l"></div><div class="sm-eye sm-eye--r"></div><div class="sm-smile"></div><div class="sm-blush sm-blush--l"></div><div class="sm-blush sm-blush--r"></div></div></div></div>
+          <h3>Samādhi — Stillness of Mind</h3>
+          <p>The clear lamp that lights the way. Through samatha — breath, nimitta, jhāna — the mind grows luminously still, unified, and capable of the sustained clarity that insight requires. The Paauk system cultivates this with extraordinary depth and care.</p>
+        </div>
+
+        <div class="how__connector">
+          <div class="connector-line"></div>
+          <div class="connector-lotus">🪷</div>
+        </div>
+
+        <div class="how__step reveal-fade" data-d="240">
+          <div class="step-num">III</div>
+          <div class="step-sun"><div class="sun-mascot sun-mascot--step"><div class="sm-face"><div class="sm-eye sm-eye--l"></div><div class="sm-eye sm-eye--r"></div><div class="sm-smile"></div><div class="sm-blush sm-blush--l"></div><div class="sm-blush sm-blush--r"></div></div></div></div>
+          <h3>Paññā — Liberating Wisdom</h3>
+          <p>The sunrise that ends the long night. Vipassanā insight — seeing impermanence, suffering, and not-self directly in one's own experience — gradually loosens the grip of craving until there is simply nothing left to hold.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ JOURNEY (Pariyatti → Paṭipatti → Paṭivedha) ══ -->
+  <section class="courses" id="journey">
+    <div class="container">
+      <div class="eyebrow">A Life Given to Dhamma</div>
+      <h2 class="section-title">From a young novice<br/><span class="grad-text">to a teacher of the world.</span></h2>
+      <p class="section-body">From the forests of Myanmar to students on every continent — a life of quiet, devoted practice, offered onward without hesitation.</p>
+    </div>
+
+    <div class="carousel-outer" id="journey-carousel">
+      <div class="carousel-track" id="journey-track">
+
+        <div class="ccard">
+          <div class="ccard__glow"></div>
+          <div class="ccard__level">Pariyatti · Study</div>
+          <div class="ccard__sun-wrap"><div class="sun-mascot sun-mascot--ccard"><div class="sm-face"><div class="sm-eye sm-eye--l"></div><div class="sm-eye sm-eye--r"></div><div class="sm-smile"></div><div class="sm-blush sm-blush--l"></div><div class="sm-blush sm-blush--r"></div></div></div></div>
+          <h3 class="ccard__title">Scriptural Foundation<br/><small>Roots in the Pāli Canon</small></h3>
+          <p class="ccard__body">Ordained at age twelve and immersed in Pāli grammar, the Vinaya, the Abhidhamma Piṭaka, and the Suttanta under senior monastics in Myanmar's forest tradition.</p>
+          <div class="ccard__tags">
+            <span class="ctag ctag--free">Foundational years</span>
+          </div>
+        </div>
+
+        <div class="ccard ccard--featured">
+          <div class="ccard__glow ccard__glow--lit"></div>
+          <div class="ccard__badge">The Turning Point</div>
+          <div class="ccard__level">Paṭipatti · Practice</div>
+          <div class="ccard__sun-wrap"><div class="sun-mascot sun-mascot--ccard"><div class="sm-face"><div class="sm-eye sm-eye--l"></div><div class="sm-eye sm-eye--r"></div><div class="sm-smile"></div><div class="sm-blush sm-blush--l"></div><div class="sm-blush sm-blush--r"></div></div></div></div>
+          <h3 class="ccard__title">Intensive Retreat<br/><small>Under Paauk Tawya Sayadaw</small></h3>
+          <p class="ccard__body">Over a decade of intensive practice, mastering the full samatha jhāna system and all stages of vipassanā insight knowledge — the deep, unhurried work behind every teaching he now offers.</p>
+          <div class="ccard__tags">
+            <span class="ctag ctag--free">Over 10 years</span>
+          </div>
+        </div>
+
+        <div class="ccard">
+          <div class="ccard__glow"></div>
+          <div class="ccard__level">Paṭivedha · Sharing</div>
+          <div class="ccard__sun-wrap"><div class="sun-mascot sun-mascot--ccard"><div class="sm-face"><div class="sm-eye sm-eye--l"></div><div class="sm-eye sm-eye--r"></div><div class="sm-smile"></div><div class="sm-blush sm-blush--l"></div><div class="sm-blush sm-blush--r"></div></div></div></div>
+          <h3 class="ccard__title">Teaching the World<br/><small>With a Smile, Always</small></h3>
+          <p class="ccard__body">Since his early forties, freely offering the Dhamma internationally — retreats, Q&A sessions, public talks — always with patience, always with love, never turning a sincere question away.</p>
+          <div class="ccard__tags">
+            <span class="ctag ctag--free">Ongoing, freely given</span>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="c-btn c-btn--prev" id="j-prev" aria-label="prev">‹</button>
+      <button class="c-btn c-btn--next" id="j-next" aria-label="next">›</button>
+      <div class="c-dots" id="j-dots"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ THE FOUR BRAHMAVIHĀRAS / METTĀ ════════════ -->
+  <section class="merit" id="metta">
+    <div class="container">
+      <div class="eyebrow">The Heart of the Teaching</div>
+      <h2 class="section-title">Loving-kindness is not<br/>performed. It is <span class="grad-text">allowed</span>.</h2>
+      <p class="section-body">Sayadaw Suvanna teaches that mettā cannot be manufactured. It arises, slowly and surely, as greed and aversion are gradually, gently released — the natural texture of a mind that has begun to understand the Dhamma.</p>
+
+      <div class="metta-orb-wrap reveal-fade" data-d="0">
+        <div class="metta-orb">
+          <div class="sun-mascot sun-mascot--orb">
+            <div class="sm-face">
+              <div class="sm-eye sm-eye--l"></div>
+              <div class="sm-eye sm-eye--r"></div>
+              <div class="sm-smile"></div>
+              <div class="sm-blush sm-blush--l"></div>
+              <div class="sm-blush sm-blush--r"></div>
+            </div>
+            <div class="sm-halo"></div>
+          </div>
+        </div>
+        <div class="metta-lines">
+          <p>"May I be well, happy, and peaceful."</p>
+          <p>"May all beings be well, happy, and peaceful."</p>
+          <p>"May no being anywhere suffer. May all beings be free."</p>
+        </div>
+      </div>
+
+      <div class="merit__grid">
+
+        <div class="mcard reveal-card" data-d="0">
+          <div class="mcard__icon-deco">💛</div>
+          <h3 class="mcard__plan">Mettā</h3>
+          <p class="mcard__pitch">Loving-kindness — the boundless wish for all beings to be happy, beginning with yourself.</p>
+        </div>
+
+        <div class="mcard reveal-card" data-d="80">
+          <div class="mcard__icon-deco">💚</div>
+          <h3 class="mcard__plan">Karuṇā</h3>
+          <p class="mcard__pitch">Compassion — the tender wish that all suffering, wherever it is found, may cease.</p>
+        </div>
+
+        <div class="mcard reveal-card" data-d="160">
+          <div class="mcard__icon-deco">🩵</div>
+          <h3 class="mcard__plan">Muditā</h3>
+          <p class="mcard__pitch">Sympathetic joy — genuine, uncomplicated delight in the happiness of others.</p>
+        </div>
+
+        <div class="mcard reveal-card" data-d="240">
+          <div class="mcard__icon-deco">🤍</div>
+          <h3 class="mcard__plan">Upekkhā</h3>
+          <p class="mcard__pitch">Equanimity — a mind steady, vast, and undisturbed, like the sky that holds every cloud.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ SPECIALIZATIONS HEADER ════════════════════ -->
+  <section class="mindset" id="specializations">
+    <div class="container">
+      <div class="mindset__quote-wrap">
+        <div class="mindset__sky-line"></div>
+        <blockquote class="mindset__quote reveal-fade" data-d="0">
+          <span class="mq-open">❝</span>
+          If a path calls to your heart, and it is one of these —<br/>
+          Sayadaw Suvanna may be the teacher you have been waiting for.
+          <cite>— On the Dhamma He Carries</cite>
+        </blockquote>
+        <div class="mindset__sky-line"></div>
+      </div>
+      <p class="section-body" style="margin-left:auto;margin-right:auto;text-align:center;max-width:680px;">
+        Every yogi is welcome. Every question is a gift. Below, each specialization is offered as its own section — so that if you are drawn to a certain practice, you will know for certain whether this is your teacher.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ TOPIC: Buddhānussati ═════════════════════ -->
+  <section class="topic-section" id="buddhanussati">
+    <div class="container">
+      <div class="topic-card reveal-card" data-d="0" style="--topic-color:#f0cc60;--topic-glow:rgba(240,204,96,0.22)">
+        <div class="topic-eyebrow-row">
+          <span class="topic-tag">Protective Meditation I · Caturārakkha Bhāvanā</span>
+        </div>
+        <div class="topic-inner">
+          <div class="topic-icon-wrap">☸️</div>
+          <div class="topic-body">
+            <h2 class="topic-title">Buddhānussati</h2>
+            <p class="topic-pali">Recollection of the Nine Qualities of the Buddha</p>
+            <p class="topic-desc">The Buddha described himself through nine qualities — Arahaṃ, Sammāsambuddho, Vijjācaraṇasampanno, Sugato, Lokavidū, Anuttaro purisadammasārathi, Satthā devamanussānaṃ, Buddho, Bhagavā. To contemplate these qualities with deep sincerity is to bring the light of the Triple Gem directly into the heart. Where the Buddha is recollected with joy, fear dissolves. Where he is honoured with love, the mind grows radiant.</p>
+            <div class="topic-points">
+              <div class="topic-point">Develops joyful confidence (<em>pasāda</em>) in the Buddha as an actually existing, fully awakened being</div>
+              <div class="topic-point">Gradually stills the mind toward access concentration (<em>upacāra samādhi</em>) through devotional recollection</div>
+              <div class="topic-point">Serves as a powerful protection — a mind resting in the Buddha's qualities is naturally shielded from fear, agitation, and harmful states</div>
+              <div class="topic-point">Taught by Sayadaw as both a stand-alone daily practice and a gateway into deeper samatha development</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ TOPIC: Mettā Bhāvanā ═════════════════════ -->
+  <section class="topic-section" id="metta-bhavana">
+    <div class="container">
+      <div class="topic-card reveal-card" data-d="0" style="--topic-color:#7ec98a;--topic-glow:rgba(126,201,138,0.20)">
+        <div class="topic-eyebrow-row">
+          <span class="topic-tag">Protective Meditation II · Caturārakkha Bhāvanā</span>
+        </div>
+        <div class="topic-inner">
+          <div class="topic-icon-wrap">💚</div>
+          <div class="topic-body">
+            <h2 class="topic-title">Mettā Bhāvanā</h2>
+            <p class="topic-pali">The Cultivation of Loving-Kindness</p>
+            <p class="topic-desc">Mettā is the wish — vast, boundless, without discrimination — that all beings be happy. Beginning with oneself, then extending to dear ones, neutral beings, difficult beings, and finally all beings in all directions without limit, this practice dismantles the walls the mind has built around the heart. Sayadaw teaches mettā with particular tenderness, knowing from long experience that a single moment of genuine loving-kindness is worth a thousand hours of strained concentration.</p>
+            <div class="topic-points">
+              <div class="topic-point">Systematically develops all four Brahmavihāras — mettā, karuṇā, muditā, and upekkhā — the divine abidings of the liberated mind</div>
+              <div class="topic-point">Can attain jhāna through eleven specific pervasions of loving-kindness, as detailed in the Visuddhimagga</div>
+              <div class="topic-point">One of the most accessible entries into samatha — the warmth of the heart is a natural anchor for a wandering mind</div>
+              <div class="topic-point">Serves as a profound protection — mettā is said to ensure peaceful sleep, a serene death, and the love of all beings</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ TOPIC: Asubha ════════════════════════════ -->
+  <section class="topic-section" id="asubha">
+    <div class="container">
+      <div class="topic-card reveal-card" data-d="0" style="--topic-color:#b39ce0;--topic-glow:rgba(179,156,224,0.18)">
+        <div class="topic-eyebrow-row">
+          <span class="topic-tag">Protective Meditation III · Caturārakkha Bhāvanā</span>
+        </div>
+        <div class="topic-inner">
+          <div class="topic-icon-wrap">🌿</div>
+          <div class="topic-body">
+            <h2 class="topic-title">Asubha Bhāvanā</h2>
+            <p class="topic-pali">Contemplation of the Impure Nature of the Body</p>
+            <p class="topic-desc">The body we carry appears beautiful to the deluded eye, yet is impermanent, unstable, and composed of thirty-two parts — hair, nails, teeth, skin, flesh, tendons, bones, organs, and more. To contemplate the body's true nature — with clear attention, not with disgust or fear, but with honest seeing — is one of the most powerful antidotes to sensual craving in all of the Buddha's teaching. Sayadaw guides this practice with great sensitivity, understanding that seeing clearly is itself an act of compassion toward oneself.</p>
+            <div class="topic-points">
+              <div class="topic-point">Directly counteracts the most pervasive fetter of ordinary existence — the beautiful-perception (<em>subha-saññā</em>) that fuels sensual craving</div>
+              <div class="topic-point">Includes both the 32-parts-of-the-body meditation and the ten corpse-stages (<em>asubha</em>) of the traditional Theravāda method</div>
+              <div class="topic-point">Can develop access and absorption concentration, creating a profoundly stable basis for vipassanā</div>
+              <div class="topic-point">Taught with care and compassion — seeing the body as it is, is not morbid but liberating, a doorway to ease</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ TOPIC: Maraṇānussati ═════════════════════ -->
+  <section class="topic-section" id="maranannussati">
+    <div class="container">
+      <div class="topic-card reveal-card" data-d="0" style="--topic-color:#e0ac7e;--topic-glow:rgba(224,172,126,0.18)">
+        <div class="topic-eyebrow-row">
+          <span class="topic-tag">Protective Meditation IV · Caturārakkha Bhāvanā</span>
+        </div>
+        <div class="topic-inner">
+          <div class="topic-icon-wrap">🕯️</div>
+          <div class="topic-body">
+            <h2 class="topic-title">Maraṇānussati</h2>
+            <p class="topic-pali">Mindfulness on Death</p>
+            <p class="topic-desc">Death is not the enemy. Death is the most honest teacher there is. The Buddha said that mindfulness of death, when cultivated deeply, leads to the Deathless. To recollect that this very life may end — not with fear or despair, but with clear, gentle attention — sharpens the urgency to practise, loosens the grip of trivial concerns, and opens the heart to what truly matters. Sayadaw teaches this not as a dark practice, but as a luminous one: the one who knows they will die lives fully, freely, and without regret.</p>
+            <div class="topic-points">
+              <div class="topic-point">Traditionally contemplated in eight ways — death may come at any moment, the day is long but life is short, the body is fragile</div>
+              <div class="topic-point">Develops powerful dispassion (<em>nibbidā</em>) toward worldly pursuits and a natural urgency toward the path</div>
+              <div class="topic-point">Supports a peaceful death — one who has practised maraṇānussati meets the end of life with clarity and ease</div>
+              <div class="topic-point">Deeply healing as well as liberating — many students report this practice dissolves anxiety and brings profound peace into daily life</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ TOPIC: Samathayānika Vipassanā ═══════════ -->
+  <section class="topic-section" id="samathayanika">
+    <div class="container">
+      <div class="topic-card topic-card--featured reveal-card" data-d="0" style="--topic-color:#7eb8e8;--topic-glow:rgba(126,184,232,0.22)">
+        <div class="topic-eyebrow-row">
+          <span class="topic-tag topic-tag--featured">The Complete Paauk Method</span>
+        </div>
+        <div class="topic-inner">
+          <div class="topic-icon-wrap topic-icon-wrap--lg">🌬️</div>
+          <div class="topic-body">
+            <h2 class="topic-title">Samathayānika Vipassanā</h2>
+            <p class="topic-pali">Ānāpānasati to Nibbāna — Breath · Nimitta · Jhāna · Liberation</p>
+            <p class="topic-desc">This is the heart of the Paauk method — the complete, step-by-step path from the very first moment of attending to the breath, all the way to the still, unconditioned peace of Nibbāna. It is a path for the yogi who is willing to go all the way. Sayadaw has walked this path himself, and guides students through it with patient, personal attention — from the first arising of the nimitta, through each jhāna, into vipassanā, and onward toward the liberating knowledge of Nibbāna.</p>
+            <div class="topic-points topic-points--grid">
+              <div class="topic-point"><strong>Ānāpānasati</strong> — Attending to the breath at the nostril tip, settling into stillness, allowing the mind to gather and unify</div>
+              <div class="topic-point"><strong>Arising of the Nimitta</strong> — The meditation sign: a luminous mental image signalling the mind's growing purity and concentration</div>
+              <div class="topic-point"><strong>The Four Jhānas</strong> — Progressive stages of unified, radiant stillness: from applied thought and joy, to equanimity and one-pointedness</div>
+              <div class="topic-point"><strong>Vipassanā through Jhāna</strong> — Using the luminous clarity of jhāna to investigate the arising and passing of conditioned phenomena with penetrating precision</div>
+              <div class="topic-point"><strong>Path and Fruit</strong> — The four stages of liberation, culminating in the complete cessation of all craving and the direct realization of Nibbāna</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ TOPIC: Suddha Vipassanā ══════════════════ -->
+  <section class="topic-section" id="suddhavipassana">
+    <div class="container">
+      <div class="topic-card reveal-card" data-d="0" style="--topic-color:#e8a860;--topic-glow:rgba(232,168,96,0.20)">
+        <div class="topic-eyebrow-row">
+          <span class="topic-tag">Pure Insight Meditation · Suddhavipassanāyānika</span>
+        </div>
+        <div class="topic-inner">
+          <div class="topic-icon-wrap">🌏</div>
+          <div class="topic-body">
+            <h2 class="topic-title">Four Element Meditation</h2>
+            <p class="topic-pali">Catudhātu Vavatthāna — Earth · Water · Fire · Air</p>
+            <p class="topic-desc">All material existence — including this very body we inhabit — is composed of four primary elements: earth (<em>paṭhavī</em>), water (<em>āpo</em>), fire (<em>tejo</em>), and air (<em>vāyo</em>). To investigate these elements directly in one's own body experience — their hardness and softness, their cohesion and fluidity, their warmth and coolness, their supporting and moving qualities — is to begin to see the body as it truly is: a dynamic, impersonal process, not a self. This is suddha vipassanā — pure insight without the preliminary development of jhāna, directly investigating the ultimate reality of materiality.</p>
+            <div class="topic-points topic-points--grid">
+              <div class="topic-point"><strong>Earth · Paṭhavī</strong> — Hardness, softness, roughness, smoothness, heaviness, and lightness, investigated directly in the body</div>
+              <div class="topic-point"><strong>Water · Āpo</strong> — Cohesion and fluidity — the element that holds the body together and allows it to flow and change</div>
+              <div class="topic-point"><strong>Fire · Tejo</strong> — Warmth and coolness — the metabolic life-fire that sustains, digests, and matures</div>
+              <div class="topic-point"><strong>Air · Vāyo</strong> — The supporting and moving element — felt in the breath, the pulse, the subtle trembling of life</div>
+            </div>
+            <p class="topic-desc topic-desc--footnote">Through sustained four-element investigation, the meditator begins to perceive materiality as kalāpas — tiny clusters of arising-and-passing phenomena — leading naturally into full vipassanā and the path to liberation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ VISUAL TEACHINGS LINK ═════════════════════ -->
+  <section class="cta-section cta-section--mini">
+    <div class="container cta-content">
+      <div class="eyebrow">Interactive</div>
+      <h2 class="section-title">Visual Dhamma <span class="grad-text">Teachings</span></h2>
+      <p class="section-body" style="margin-left:auto;margin-right:auto;text-align:center;">Explore the Paṭicca-samuppāda, the 32 parts of the body, and other core teachings through beautiful visual slides — created with care, offered freely.</p>
+      <a href="dhamma/index.html" class="btn btn--sky">
+        <span>Open the Teachings</span>
+        <span class="btn__lotus">📖</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ DHAMMA TALKS ══════════════════════════════ -->
+  <section class="voices" id="talks">
+    <div class="container">
+      <div class="eyebrow">Listen</div>
+      <h2 class="section-title">Dhamma Talks<br/><span class="grad-text">Offered Freely.</span></h2>
+      <p class="section-body">Teachings in English, Burmese, and Vietnamese — offered to anyone who wishes to listen. The Dhamma has no price.</p>
+    </div>
+
+    <div class="talks-grid container">
+      <a href="https://www.youtube.com" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-card__glow"></div>
+        <div class="talk-platform">▶ YouTube</div>
+        <h4>Dhamma Talks Channel</h4>
+        <p>Talks on meditation, Abhidhamma, the 37 Factors of Enlightenment, and open Q&A with students from around the world.</p>
+        <span class="talk-arrow">Watch the talks →</span>
+      </a>
+      <a href="https://www.facebook.com" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-card__glow"></div>
+        <div class="talk-platform">📘 Facebook Live</div>
+        <h4>Weekly Live Sessions</h4>
+        <p>Every Sunday — live guided meditation followed by open Q&A. No registration required. Arrive and sit.</p>
+        <span class="talk-arrow">Join on Sunday →</span>
+      </a>
+      <a href="#" class="talk-card">
+        <div class="talk-card__glow"></div>
+        <div class="talk-platform">🎙 Podcast</div>
+        <h4>Dhamma Reflections</h4>
+        <p>Short ten to fifteen minute reflections for daily practice — a moment of quiet in a busy day, offered with love.</p>
+        <span class="talk-arrow">Listen now →</span>
+      </a>
+      <a href="#" class="talk-card">
+        <div class="talk-card__glow"></div>
+        <div class="talk-platform">📝 Transcripts</div>
+        <h4>Written Teachings</h4>
+        <p>Selected talks transcribed and gently edited — for those who prefer to read slowly and return many times.</p>
+        <span class="talk-arrow">Read the words →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ RETREAT CALENDAR ══════════════════════════ -->
+  <section class="merit" id="retreats">
+    <div class="container">
+      <div class="eyebrow">Coming Up</div>
+      <h2 class="section-title">Retreat Calendar<br/><span class="grad-text">Every Yogi Welcome.</span></h2>
+      <p class="section-body">All retreats are offered freely or on a dāna basis. No experience is too little. No question is too small.</p>
+
+      <div class="retreat-list">
+        <div class="retreat-item reveal-fade" data-d="0">
+          <div class="retreat-date"><div class="rmonth">Aug</div><div class="rday">12</div><div class="ryear">2026</div></div>
+          <div class="retreat-info"><h4>7-Day Samatha Retreat · Kuala Lumpur</h4><p>Concentration in breath meditation and jhāna development. For practitioners with some prior sitting experience.</p></div>
+          <span class="retreat-tag">7 Days</span>
+        </div>
+        <div class="retreat-item reveal-fade" data-d="100">
+          <div class="retreat-date"><div class="rmonth">Sep</div><div class="rday">20</div><div class="ryear">2026</div></div>
+          <div class="retreat-info"><h4>Weekend Mettā Retreat · Ho Chi Minh City</h4><p>Loving-kindness meditation and the four Brahmavihāras. Open to all — beginners especially welcome.</p></div>
+          <span class="retreat-tag">Weekend</span>
+        </div>
+        <div class="retreat-item reveal-fade" data-d="200">
+          <div class="retreat-date"><div class="rmonth">Nov</div><div class="rday">01</div><div class="ryear">2026</div></div>
+          <div class="retreat-info"><h4>10-Day Vipassanā Retreat · Paauk Tawya Centre</h4><p>The full Paauk method in Myanmar. Prior samatha experience required. A rare and precious opportunity.</p></div>
+          <span class="retreat-tag">10 Days</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ QUOTES / "VOICES" ═════════════════════════ -->
+  <section class="voices" id="quotes">
+    <div class="container">
+      <div class="eyebrow">Words of Dhamma</div>
+      <h2 class="section-title">In His Own Words.<br/><span class="grad-text">Spoken With Ease.</span></h2>
+    </div>
+
+    <div class="testi-outer" id="quote-carousel">
+      <div class="testi-track" id="quote-track">
+
+        <div class="tcard">
+          <div class="tcard__stars">☸ ☸ ☸ ☸ ☸</div>
+          <blockquote>"The Dhamma is not something you acquire — it is something you uncover. Like clearing mud from a clear stream, the practice is simply removing what obscures the clarity already there."</blockquote>
+          <div class="tcard__who">
+            <div class="tcard__av av1"></div>
+            <div><strong>On the Nature of Practice</strong><span>Ven. Sayadaw Suvanna</span></div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <div class="tcard__stars">☸ ☸ ☸ ☸ ☸</div>
+          <blockquote>"Do not be hard on yourself when the mind wanders. The noticing itself is the meditation. Come back — gently, again and again — without drama, without judgment."</blockquote>
+          <div class="tcard__who">
+            <div class="tcard__av av2"></div>
+            <div><strong>On Meditation Practice</strong><span>Ven. Sayadaw Suvanna</span></div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <div class="tcard__stars">☸ ☸ ☸ ☸ ☸</div>
+          <blockquote>"Loving-kindness is not a feeling you manufacture. It is what remains when the greed and the aversion settle, like sediment in still water. You do not create mettā. You allow it."</blockquote>
+          <div class="tcard__who">
+            <div class="tcard__av av3"></div>
+            <div><strong>On Mettā</strong><span>Ven. Sayadaw Suvanna</span></div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <div class="tcard__stars">☸ ☸ ☸ ☸ ☸</div>
+          <blockquote>"The nimitta is a gift the mind gives itself when it trusts the breath enough to rest. Do not grasp it. Do not analyse it. Simply be with it, with gratitude and quiet joy."</blockquote>
+          <div class="tcard__who">
+            <div class="tcard__av av4"></div>
+            <div><strong>On Samatha Practice</strong><span>Ven. Sayadaw Suvanna</span></div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <div class="tcard__stars">☸ ☸ ☸ ☸ ☸</div>
+          <blockquote>"Mindfulness of death is not a sad practice. It is the most courageous and liberating one. The person who truly knows they will die can live — really live — every remaining moment."</blockquote>
+          <div class="tcard__who">
+            <div class="tcard__av av5"></div>
+            <div><strong>On Maraṇānussati</strong><span>Ven. Sayadaw Suvanna</span></div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <div class="tcard__stars">☸ ☸ ☸ ☸ ☸</div>
+          <blockquote>"The four elements are not philosophy. They are here, right now — in the warmth of your hands, the weight of your body, the breath moving. Insight begins in this very body."</blockquote>
+          <div class="tcard__who">
+            <div class="tcard__av av1"></div>
+            <div><strong>On Four Element Meditation</strong><span>Ven. Sayadaw Suvanna</span></div>
+          </div>
+        </div>
+
+      </div>
+      <button class="c-btn c-btn--prev" id="q-prev" aria-label="prev">‹</button>
+      <button class="c-btn c-btn--next" id="q-next" aria-label="next">›</button>
+      <div class="c-dots" id="q-dots"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ CONTACT / CTA ═════════════════════════════ -->
+  <section class="cta-section" id="contact">
+    <div class="cta-sky-bg">
+      <div class="cta-cloud cc1"></div>
+      <div class="cta-cloud cc2"></div>
+      <div class="cta-cloud cc3"></div>
+      <div class="cta-cloud cc4"></div>
+    </div>
+    <div class="cta-sun-scene">
+      <div class="cta-sun">
+        <div class="sm-face cta-sm-face">
+          <div class="sm-eye sm-eye--l"></div>
+          <div class="sm-eye sm-eye--r"></div>
+          <div class="sm-smile"></div>
+          <div class="sm-blush sm-blush--l"></div>
+          <div class="sm-blush sm-blush--r"></div>
+        </div>
+        <div class="cta-sun__ring cr1"></div>
+        <div class="cta-sun__ring cr2"></div>
+        <div class="cta-sun__ring cr3"></div>
+      </div>
+      <div class="cta-sunbeam-pool"></div>
+    </div>
+    <div class="container cta-content">
+      <div class="eyebrow">Come & Ask</div>
+      <h2 class="section-title">
+        Close your eyes.<br/>
+        Take a deep breath.<br/>
+        <span class="grad-text">You are warmly invited.</span>
+      </h2>
+      <p class="section-body">Sayadaw Suvanna welcomes every question, from every tradition, from every stage of the path. Whether you have never meditated before or have been sitting for decades — you are warmly, wholeheartedly invited to reach out.</p>
+      <div class="cta-links">
+        <a href="https://www.youtube.com" target="_blank" rel="noopener" class="contact-link">▶ YouTube</a>
+        <a href="https://www.facebook.com" target="_blank" rel="noopener" class="contact-link">📘 Facebook</a>
+        <a href="https://github.com/rex-9/vensuvanna" target="_blank" rel="noopener" class="contact-link">🐙 GitHub</a>
+        <a href="dhamma/index.html" class="contact-link">📖 Teachings</a>
+      </div>
+      <p class="cta-whisper">Sabbe Sattā Sukhitā Hontu · May All Beings Be Happy</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ FOOTER ═══════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div class="sun-mascot sun-mascot--footer">
+          <div class="sm-face"><div class="sm-eye sm-eye--l"></div><div class="sm-eye sm-eye--r"></div><div class="sm-smile"></div><div class="sm-blush sm-blush--l"></div><div class="sm-blush sm-blush--r"></div></div>
+          <div class="sm-halo"></div>
+        </div>
+        <span class="footer__name">Ven. Suvanna</span>
+        <p class="footer__sub">Paauk Tawya · Theravāda Tradition</p>
+        <p class="footer__dhamma">"As sunlight falls on every cloud without choosing — may the merit of practice reach all beings."</p>
+      </div>
+      <div class="footer__nav">
+        <div class="fcol">
+          <h4>Practice</h4>
+          <a href="#specializations">Specializations</a>
+          <a href="#journey">His Journey</a>
+          <a href="#threefold">The Three Trainings</a>
+          <a href="dhamma/index.html">Visual Teachings</a>
+        </div>
+        <div class="fcol">
+          <h4>The Four Protections</h4>
+          <a href="#buddhanussati">Buddhānussati</a>
+          <a href="#metta-bhavana">Mettā Bhāvanā</a>
+          <a href="#asubha">Asubha Bhāvanā</a>
+          <a href="#maranannussati">Maraṇānussati</a>
+        </div>
+        <div class="fcol">
+          <h4>Connect</h4>
+          <a href="#talks">Dhamma Talks</a>
+          <a href="#retreats">Retreat Calendar</a>
+          <a href="#contact">Ask a Question</a>
+          <a href="#quotes">Words of Dhamma</a>
+        </div>
+        <div class="fcol">
+          <h4>About</h4>
+          <a href="#about">His Story</a>
+          <a href="#metta">Loving-Kindness</a>
+          <a href="https://github.com/rex-9/vensuvanna" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2026 Ven. Sayadaw Suvanna · Paauk Tawya Tradition. All merit offered to all beings, everywhere.</p>
+      <div class="footer__app-links">
+        <a href="https://www.youtube.com" target="_blank">YouTube</a>
+        <a href="https://www.facebook.com" target="_blank">Facebook</a>
+      </div>
+    </div>
+  </footer>
 
   <script src="main.js"></script>
 </body>
