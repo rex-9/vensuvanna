@@ -105,9 +105,9 @@ const C = {
   /* Paint sky gradient */
   function drawSky() {
     const g = ctx.createRadialGradient(W * 0.5, H * 0.22, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.95);
-    g.addColorStop(0, 'rgba(28,46,84,0.97)');
-    g.addColorStop(0.3, 'rgba(16,28,58,0.99)');
-    g.addColorStop(0.7, 'rgba(10,18,42,1)');
+    g.addColorStop(0, 'rgba(63, 72, 92, 0.97)');
+    g.addColorStop(0.3, 'rgb(18, 48, 139)');
+    g.addColorStop(0.7, 'rgba(0, 0, 0, 0.99)');
     g.addColorStop(1, 'rgba(7,13,30,1)');
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
@@ -175,42 +175,12 @@ const C = {
     if (frame % 320 === 0 && Math.random() < 0.5) spawnShooter();
   }
 
-  /* Paint far cloud-sea horizon — reinforces CSS sky layers */
-  function drawCloudSea() {
-    ctx.save();
-    const hg = ctx.createLinearGradient(0, H * 0.72, 0, H);
-    hg.addColorStop(0, 'rgba(191,224,245,0.05)');
-    hg.addColorStop(0.3, 'rgba(62,124,194,0.025)');
-    hg.addColorStop(1, 'rgba(7,13,30,0)');
-    ctx.fillStyle = hg;
-    ctx.fillRect(0, H * 0.72, W, H * 0.28);
-
-    ctx.strokeStyle = 'rgba(255,244,210,0.04)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(0, H * 0.8);
-    let px = 0;
-    while (px < W) {
-      const step = rand(10, 24);
-      const ht = rand(H * 0.76, H * 0.85);
-      ctx.lineTo(px, ht);
-      px += step;
-    }
-    ctx.lineTo(W, H);
-    ctx.lineTo(0, H);
-    ctx.closePath();
-    ctx.fillStyle = 'rgba(10,18,40,0.28)';
-    ctx.fill();
-    ctx.restore();
-  }
-
   function animate() {
     ctx.clearRect(0, 0, W, H);
     drawSky();
     drawClouds();
     drawStars();
     drawShooters();
-    drawCloudSea();
     raf = requestAnimationFrame(animate);
   }
 

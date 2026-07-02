@@ -516,35 +516,33 @@ body.fullscreen-bg .slide-counter:not(.hidden) {
 }
 
 @media (max-width: 768px) {
-  .carousel-item {
-    width: 70px;
-    height: 50px;
-  }
-
-  .image-frame {
-    max-height: 60vh;
-  }
-
-  .image-frame img,
-  .image-frame video {
-    max-height: 60vh;
-  }
-
   button {
     padding: 5px 10px;
     font-size: 0.75rem;
     min-width: 34px;
   }
 
+
   .slide-counter {
-    font-size: 0.7rem;
-    padding: 4px 10px;
+    position: fixed;
+    top: 12px;
+    bottom: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 35;
+    background: rgba(10, 14, 23, 0.85);
+    backdrop-filter: blur(16px);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    gap: 6px;
   }
 
+  /* Hide profile and github text on mobile */
   .profile-link span,
   .github-link span {
     display: none;
-    /* Hide text on mobile, show only icons */
   }
 
   .profile-link,
@@ -559,6 +557,65 @@ body.fullscreen-bg .slide-counter:not(.hidden) {
     height: 16px;
   }
 
+  .counter-display {
+    font-size: 0.85rem;
+    padding: 0 4px;
+  }
+
+  .counter-sep {
+    margin: 0 2px;
+  }
+
+  .nav-controls {
+    bottom: 16px;
+    right: 50%;
+    transform: translateX(50%);
+    padding: 6px 10px;
+    gap: 6px;
+    border-radius: 40px;
+  }
+
+  .nav-controls button {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    min-width: 30px;
+  }
+
+  /* Hide text on topic button, show only icon and topic name */
+  #topicBtn {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+  }
+
+  /* Ensure featured area has proper padding for top counter */
+  .featured-area {
+    padding-top: 60px;
+  }
+
+  /* Carousel adjustments */
+  .carousel-item {
+    width: 70px;
+    height: 50px;
+  }
+
+  .image-frame {
+    max-height: 55vh;
+  }
+
+  .image-frame img,
+  .image-frame video {
+    max-height: 55vh;
+  }
+
+  .carousel-container {
+    margin: 0 10px 50px 10px;
+  }
+
+  .carousel-track {
+    gap: 8px;
+    padding: 6px 0 8px 0;
+  }
+
   .topic-modal {
     padding: 25px 20px;
   }
@@ -566,5 +623,55 @@ body.fullscreen-bg .slide-counter:not(.hidden) {
   .topic-item {
     padding: 12px 16px;
     font-size: 0.9rem;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  .slide-counter {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    top: 8px;
+  }
+
+  .profile-link svg,
+  .github-link svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .counter-display {
+    font-size: 0.75rem;
+  }
+
+  .nav-controls {
+    bottom: 12px;
+    padding: 4px 8px;
+    gap: 4px;
+  }
+
+  .nav-controls button {
+    font-size: 0.6rem;
+    padding: 3px 8px;
+    min-width: 26px;
+  }
+
+  .featured-area {
+    padding-top: 50px;
+  }
+
+  .image-frame {
+    max-height: 50vh;
+  }
+
+  .image-frame img,
+  .image-frame video {
+    max-height: 50vh;
+    border-radius: 16px;
+  }
+
+  .carousel-item {
+    width: 56px;
+    height: 40px;
   }
 }

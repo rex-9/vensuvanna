@@ -838,10 +838,24 @@ strong {
 .sunbeam {
   position: absolute;
   top: 0;
-  width: 80px;
-  background: linear-gradient(to bottom, rgba(240, 210, 130, 0.08) 0%, transparent 80%);
-  transform-origin: top center;
+  width: 220px;
   pointer-events: none;
+
+  background:
+    linear-gradient(to right,
+      transparent 0%,
+      rgba(255, 245, 220, .04) 20%,
+      rgba(255, 245, 220, .10) 50%,
+      rgba(255, 245, 220, .04) 80%,
+      transparent 100%),
+    linear-gradient(to bottom,
+      rgba(255, 245, 220, .12) 0%,
+      rgba(255, 245, 220, .06) 35%,
+      transparent 100%);
+
+  filter: blur(32px);
+  opacity: .75;
+  mix-blend-mode: screen;
 }
 
 .sb1 {
@@ -910,19 +924,6 @@ strong {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.hero-portrait-beam {
-  display: none;
-  position: absolute;
-  top: 18%;
-  right: 68%;
-  width: min(240px, 36vw);
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(240, 210, 130, 0.4), rgba(212, 168, 50, 0.15));
-  transform: rotate(-10deg);
-  opacity: 0.65;
-  pointer-events: none;
 }
 
 .hero-portrait {
@@ -1124,10 +1125,6 @@ strong {
   .hero__visual {
     justify-content: flex-end;
     min-height: 360px;
-  }
-
-  .hero-portrait-beam {
-    display: block;
   }
 
   .sb1 {
@@ -1332,7 +1329,7 @@ strong {
   transform: translateY(0);
 }
 
-/* ── PROMISE / ABOUT SECTION ─────────────────────────────────────────────── */
+/* ── ABOUT / JOURNEY SECTION ─────────────────────────────────────────────── */
 .promise {
   position: relative;
   z-index: 3;
@@ -1355,6 +1352,8 @@ strong {
   overflow: hidden;
   backdrop-filter: blur(14px);
   transition: all 0.4s var(--ease-heaven);
+  display: flex;
+  flex-direction: column;
 }
 
 .pcard:hover {
@@ -1435,6 +1434,7 @@ strong {
   font-size: 0.9rem;
   color: var(--text-mid);
   line-height: 1.8;
+  flex: 1;
 }
 
 .pcard__bar {

@@ -35,6 +35,7 @@ const prevBtn = document.getElementById('prevBtn');
 const linkBtn = document.getElementById('linkBtn');
 const nextBtn = document.getElementById('nextBtn');
 const lastBtn = document.getElementById('lastBtn');
+const currentTopicDisplay = document.getElementById('currentTopicDisplay');
 
 // ========== HELPERS ==========
 function isVideoFile(filename) {
@@ -235,6 +236,7 @@ function buildSlidesForTopic(topicName) {
   totalSlidesSpan.innerText = totalSlides;
   updateCounterDisplay();
   updateButtonsState();
+  updateTopicDisplay();
   buildCarouselForTopic(topicName);
   updateCarouselActive();
 
@@ -359,6 +361,7 @@ function switchTopic(topicName) {
   if (topicName === currentTopic) { closeTopicModal(); return; }
   currentTopic = topicName;
   currentSlideIndex = 0;
+  updateTopicDisplay();
   buildSlidesForTopic(topicName);
   closeTopicModal();
   try {
@@ -567,6 +570,27 @@ function handlePopState() {
   }
 }
 
+// ========== UPDATE TOPIC DISPLAY ==========
+function updateTopicDisplay() {
+  if (currentTopicDisplay) {
+    currentTopicDisplay.textContent = currentTopic || 'Topics';
+  }
+}
+
+// ========== DOUBLE-CLICK FULLSCREEN FOR MOBILE ==========
+function initDoubleClickFullscreen() {
+  const featuredArea = document.getElementById('featuredArea');
+
+  if (featuredArea) {
+    featuredArea.addEventListener('dblclick', function (e) {
+      // Only trigger on mobile (768px and below)
+      if (window.innerWidth <= 768) {
+        toggleFullscreen();
+      }
+    });
+  }
+}
+
 // ========== INIT ==========
 async function init() {
   // Show loading
@@ -636,6 +660,9 @@ async function init() {
   currentTopic = startTopic;
   currentSlideIndex = startSlide;
 
+  // Update the topic display button
+  updateTopicDisplay();
+
   // Build slides
   buildSlidesForTopic(currentTopic);
 
@@ -664,6 +691,9 @@ async function init() {
   linkBtn.addEventListener('click', jumpToLinked);
   nextBtn.addEventListener('click', nextSlide);
   lastBtn.addEventListener('click', lastSlide);
+
+  // Initialize double-click fullscreen for mobile
+  initDoubleClickFullscreen();
 
   console.log(`📚 Loaded ${topicList.length} topics:`, topicList);
   console.log(`📄 Current: ${currentTopic} (${totalSlides} slides), slide: ${currentSlideIndex + 1}`);
