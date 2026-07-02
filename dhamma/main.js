@@ -427,7 +427,9 @@ function renderTopicList() {
     const div = document.createElement('div');
     div.className = 'topic-item' + (name === currentTopic ? ' active' : '');
     const count = topicData[name]?.length || 0;
-    div.innerHTML = `<span>📁 ${name}</span><span class="badge">${count}</span>`;
+    // Capitalize the topic name for display
+    const displayName = name.charAt(0).toUpperCase() + name.slice(1);
+    div.innerHTML = `<span>📁 ${displayName}</span><span class="badge">${count}</span>`;
     div.addEventListener('click', () => switchTopic(name));
     topicListEl.appendChild(div);
   });
@@ -573,7 +575,10 @@ function handlePopState() {
 // ========== UPDATE TOPIC DISPLAY ==========
 function updateTopicDisplay() {
   if (currentTopicDisplay) {
-    currentTopicDisplay.textContent = currentTopic || 'Topics';
+    // Capitalize first letter, keep the rest as is
+    const topicName = currentTopic || 'Topics';
+    const capitalized = topicName.charAt(0).toUpperCase() + topicName.slice(1);
+    currentTopicDisplay.textContent = capitalized;
   }
 }
 
