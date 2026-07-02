@@ -2,7 +2,7 @@
 // TOPICS.JSON APPROACH — CLEAN & SIMPLE
 // ============================================================
 
-const BASE_PATH = './';
+const BASE_PATH = '/dhamma/';
 const MANIFEST_URL = BASE_PATH + 'topics.json';
 
 // State
