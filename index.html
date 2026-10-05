@@ -3,15 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ven. Sayadaw Suvanna — Paauk Tawya · A Teacher You Can Sit With</title>
-  <meta name="description" content="Sayadaw Suvanna teaches the Theravāda path with a smile — Samatha, Vipassanā, and the Abhidhamma — offered freely, with patience and loving-kindness, to anyone willing to begin." />
+  <title>Ven. Ashin Suvanna (Suvaṇṇa Sayadaw) — Pa-Auk Tawya Tradition</title>
+  <meta name="description" content="Venerable Ashin Suvanna (Suvaṇṇa Sayadaw) — Sāsana Dhaja Dhammācariya, meditation master in the Pa-Auk tradition guiding practitioners in Sīla, Samādhi, and Paññā." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='sunGold' cx='40%25' cy='35%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23FFFBE8'/%3E%3Cstop offset='55%25' stop-color='%23F0CC60'/%3E%3Cstop offset='100%25' stop-color='%23D4A832'/%3E%3C/radialGradient%3E%3Cfilter id='glow' x='-40%25' y='-40%25' width='180%25' height='180%25'%3E%3CfeGaussianBlur stdDeviation='3.5' result='blur'/%3E%3CfeMerge%3E%3CfeMergeNode in='blur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='42' fill='url%28%23sunGold%29' filter='url%28%23glow%29'/%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%23D4A832' stroke-width='0.8' opacity='0.5'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css?v=6.0" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='sunGold' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23FFFFFF'/%3E%3Cstop offset='30%25' stop-color='%23FFF8D0'/%3E%3Cstop offset='65%25' stop-color='%23FFD23F'/%3E%3Cstop offset='100%25' stop-color='%23F59E0B'/%3E%3C/radialGradient%3E%3Cfilter id='glow' x='-40%25' y='-40%25' width='180%25' height='180%25'%3E%3CfeGaussianBlur stdDeviation='3.5' result='blur'/%3E%3CfeMerge%3E%3CfeMergeNode in='blur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='42' fill='url%28%23sunGold%29' filter='url%28%23glow%29'/%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%23D4A832' stroke-width='0.8' opacity='0.5'/%3E%3C/svg%3E" />
 </head>
 <body>
+
+  <!-- Shared Full Sun Symbol Definition -->
+  <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+    <defs>
+      <radialGradient id="fullSunGrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#FFFFFF" />
+        <stop offset="25%" stop-color="#FFF8D0" />
+        <stop offset="55%" stop-color="#FFD23F" />
+        <stop offset="85%" stop-color="#F59E0B" />
+        <stop offset="100%" stop-color="#E08700" />
+      </radialGradient>
+      <filter id="solarBloom" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur stdDeviation="3" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+    <symbol id="full-sun-symbol" viewBox="0 0 100 100">
+      <g class="sun-svg-rays" stroke="#FFD23F" stroke-width="3.5" stroke-linecap="round" opacity="0.95">
+        <line x1="50" y1="5" x2="50" y2="17" />
+        <line x1="50" y1="83" x2="50" y2="95" />
+        <line x1="5" y1="50" x2="17" y2="50" />
+        <line x1="83" y1="50" x2="95" y2="50" />
+        <line x1="18" y1="18" x2="27" y2="27" />
+        <line x1="73" y1="73" x2="82" y2="82" />
+        <line x1="82" y1="18" x2="73" y2="27" />
+        <line x1="27" y1="73" x2="18" y2="82" />
+      </g>
+      <circle cx="50" cy="50" r="28" fill="url(#fullSunGrad)" filter="url(#solarBloom)" />
+      <circle cx="50" cy="50" r="28" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+    </symbol>
+  </svg>
 
   <canvas id="heaven-canvas"></canvas>
   <div class="light-wash"></div>
@@ -22,15 +56,8 @@
   <nav class="nav" id="nav">
     <div class="nav__inner">
       <a href="#home" class="nav__logo">
-        <div class="sun-mascot sun-mascot--nav" id="nav-sun">
-          <div class="sm-face">
-            <div class="sm-eye sm-eye--l"></div>
-            <div class="sm-eye sm-eye--r"></div>
-            <div class="sm-smile"></div>
-            <div class="sm-blush sm-blush--l"></div>
-            <div class="sm-blush sm-blush--r"></div>
-          </div>
-          <div class="sm-halo"></div>
+        <div class="sun-mascot sun-mascot--nav sun-mascot--svg" id="nav-sun">
+          <svg class="sun-svg" viewBox="0 0 100 100"><use href="#full-sun-symbol"/></svg>
         </div>
         <div class="nav__wordmark">
           <span class="nav__name">Ven. Suvanna</span>
@@ -40,10 +67,9 @@
 
       <ul class="nav__links" id="nav-links">
         <li><a href="#about">About</a></li>
-        <li><a href="#journey">Journey</a></li>
         <li><a href="#specializations">Specializations</a></li>
+        <li><a href="#online-class">Online Class</a></li>
         <li><a href="#talks">Dhamma Talks</a></li>
-        <li><a href="#retreats">Retreats</a></li>
         <li><a href="dhamma/index.html" class="nav__pill">📖 Teachings</a></li>
       </ul>
 
@@ -76,25 +102,26 @@
           <span class="hero__hl-line hero__hl-grad reveal-up" data-d="220">A Path That Is Already Clear.</span>
         </h1>
         <p class="hero__body reveal-fade" data-d="480">
-          "Clouds gather and scatter by the wind,<br/>
+          "Clouds gather and scatter by the Wind,<br/>
           People meet and leave by the Kamma."<br/>
-          Forty years in the Dhamma. Offered to you with a smile.
+          Sāsana Dhaja Dhammācariya · Pa-Auk Tawya Meditation Master.<br/>
+          Guiding practitioners on the Noble Path toward the end of suffering.
         </p>
         <div class="hero__cta-row reveal-fade" data-d="580">
-          <a href="#specializations" class="btn btn--sky">
-            <span>Explore the Teachings</span>
+          <a href="#online-class" class="btn btn--sky">
+            <span>Saturday Zoom Class</span>
             <span class="btn__lotus">🪷</span>
           </a>
-          <a href="#about" class="btn btn--ghost">Meet Sayadaw Suvanna</a>
+          <a href="#about" class="btn btn--ghost">Life &amp; Biography</a>
         </div>
         <div class="hero__proof reveal-fade" data-d="680">
           <div class="proof-pill">
             <span class="proof-dot"></span>
-            <span>40+ years walking the Paauk path</span>
+            <span>Bhikkhu (Upasampadā) since 1998</span>
           </div>
           <div class="proof-pill">
             <span class="proof-dot proof-dot--gold"></span>
-            <span>Teaching freely across 6 countries</span>
+            <span>Pa-Auk International Center, Thailand</span>
           </div>
         </div>
       </div>
@@ -128,40 +155,33 @@
   <div class="ticker-wrap">
     <div class="ticker-inner" id="ticker">
       <span>☸ Sabbe sattā sukhitā hontu — May all beings be happy</span>
-      <span>🪷 Nguyện tất cả chúng sanh được an lạc</span>
-      <span>☸ Every teaching offered freely, on a dāna basis</span>
-      <span>🪷 No question too small. No yogi turned away.</span>
-      <span>☸ Forty years of practice, offered with a smile</span>
-      <span>🪷 The Paauk method — breath to Nibbāna</span>
-      <span>☸ Mettā is not manufactured. It is allowed.</span>
-      <span>🪷 Teaching in Myanmar, Thailand, Vietnam & beyond</span>
+      <span>🪷 May all beings abide in peace, harmony, and liberation</span>
+      <span>☸ Sāsana Dhaja Dhammācariya · Venerable Ashin Suvanna</span>
+      <span>🪷 Learn together · Practice together · Strive with diligence</span>
+      <span>☸ Monastic life dedicated to the Triple Gem since 1998</span>
+      <span>🪷 The Pa-Auk method — Sīla · Samādhi · Paññā</span>
+      <span>☸ Live Zoom Class: Saturdays 19:30 – 21:00 (GMT+7)</span>
+      <span>🪷 Pa-Auk International Meditation Center, Angthong, Thailand</span>
       <span>☸ Sabbe sattā sukhitā hontu — May all beings be happy</span>
-      <span>🪷 Nguyện tất cả chúng sanh được an lạc</span>
-      <span>☸ Every teaching offered freely, on a dāna basis</span>
-      <span>🪷 No question too small. No yogi turned away.</span>
-      <span>☸ Forty years of practice, offered with a smile</span>
-      <span>🪷 The Paauk method — breath to Nibbāna</span>
+      <span>🪷 May all beings abide in peace, harmony, and liberation</span>
+      <span>☸ Sāsana Dhaja Dhammācariya · Venerable Ashin Suvanna</span>
+      <span>🪷 Learn together · Practice together · Strive with diligence</span>
+      <span>☸ Monastic life dedicated to the Triple Gem since 1998</span>
+      <span>🪷 The Pa-Auk method — Sīla · Samādhi · Paññā</span>
     </div>
   </div>
 
     <!-- ══════════════════════════ ABOUT / JOURNEY ═══════════════════════════ -->
   <section class="promise" id="about">
     <div class="container">
-      <div class="eyebrow">A Life Given to Dhamma</div>
+      <div class="eyebrow">A Life Dedicated to the Sāsana</div>
       <h2 class="section-title">
-        From a young novice<br/>
-        <span class="grad-text">to a teacher of the world.</span></h2>
+        A Brief Introduction to<br/>
+        <span class="grad-text">Venerable Ashin Suvanna</span>
+      </h2>
 
       <p class="section-body">
-        From the forests of Myanmar to students on every continent —
-        a life of quiet, devoted practice, offered onward without hesitation.
-        Born in Myanmar, Ven. Sayadaw Suvanna ordained as a novice at a young age
-        and devoted his life to the Pāli scriptures and intensive meditation
-        under the revered Paauk Tawya Sayadaw. Decades later,
-        he teaches with a rare combination — rigorous in method, endlessly compassionate in spirit.
-        He never rushes a student. He never discourages a question.
-        He holds, with the quiet confidence of deep experience,
-        the truth that every person already carries the seed of awakening.
+        Venerable Ashin Suvanna was born in 1976 in Myanmar (Burma), in a family with strong faith in the Triple Gem (Tiratana). In 1998, at the age of 21, he received the higher ordination (Upasampadā) at Khandasīma, officially entering the monastic life as a Bhikkhu in the Theravāda tradition, following the path of the holy life (Brahmacariya). With great effort (Viriya) in studying the Tipiṭaka, he completed advanced Dhamma studies and was awarded the prestigious title <strong>Sāsana Dhaja Dhammācariya</strong>. With a strong wish to directly realize the truth (Paṭivedha), he subsequently dedicated himself to intensive meditation practice (Bhāvanā) at Pa-Auk Tawya Meditation Center under the direct guidance of the Most Venerable Pa-Auk Sayadaw. Today, like a spiritual friend (Kalyāṇa-mitta), he guides practitioners worldwide on the Noble Path (Ariya-magga) toward the end of suffering (Dukkha-nirodha).
       </p>
 
       <div class="promise__cards">
@@ -170,46 +190,42 @@
           <div class="pcard__icon">
             <div class="lotus-icon">📖</div>
           </div>
-          <h3 class="ccard__title">Pariyatti · Study<br/><small>Roots in the Pāli Canon</small></h3>
-          <p>Ordained at age twelve and immersed in Pāli grammar, the Vinaya, the Abhidhamma Piṭaka, and the Suttanta under senior monastics in Myanmar's forest tradition.</p>
+          <h3 class="ccard__title">Pariyatti · Study<br/><small>Sāsana Dhaja Dhammācariya</small></h3>
+          <p>From the early years of his ordination, he devoted himself to Pariyatti (theoretical Dhamma). He studied Pāḷi and Buddhist teachings at basic and intermediate levels at Mani Ratana Bô Pāḷi Academy in Monywa, then continued studies with senior Mahātheras at Masoyein Thit Monastery in Mandalay. Awarded the title Sāsana Dhaja Dhammācariya, he taught Dhamma Pariyatti at Mani Ratanabon Monastery in Monywa and served the Sāsana as a member of Viniccaya of Sagaing Division.</p>
           <div class="pcard__bar"></div>
           <div class="ccard__tags" style="margin-top:16px;">
-            <span class="ctag ctag--free">Foundational years</span>
+            <span class="ctag ctag--free">Tipiṭaka Mastery · Viriya</span>
           </div>
         </div>
 
         <div class="pcard pcard--lit reveal-card" data-d="120">
           <div class="pcard__icon">
             <div class="pcard__top">
-              <div class="sun-mascot sun-mascot--card">
-                <div class="sm-face">
-                  <div class="sm-eye sm-eye--l"></div>
-                  <div class="sm-eye sm-eye--r"></div>
-                  <div class="sm-smile"></div>
-                  <div class="sm-blush sm-blush--l"></div>
-                  <div class="sm-blush sm-blush--r"></div>
-                </div>
+              <div class="sun-mascot sun-mascot--card sun-mascot--svg">
+                <svg class="sun-svg" viewBox="0 0 100 100"><use href="#full-sun-symbol"/></svg>
               </div>
-              <div class="pcard__badge">The Turning Point</div>
+              <div class="pcard__badge">Paṭivedha · Realization</div>
             </div>
           </div>
-          <h3 class="ccard__title">Paṭipatti · Practice<br/><small>Under Paauk Tawya Sayadaw</small></h3>
-          <p>Over a decade of intensive practice, mastering the full samatha jhāna system and all stages of vipassanā insight knowledge — the deep, unhurried work behind every teaching he now offers.</p>
+          <h3 class="ccard__title">Bhāvanā · Practice<br/><small>Pa-Auk Tawya Meditation Center</small></h3>
+          <p>With a strong wish to realize the truth (Paṭivedha), he left teaching to focus entirely on meditation practice (Bhāvanā). He trained at Pa-Auk Tawya Meditation Center under the guidance of the Most Venerable Pa-Auk Sayadaw. After many years of diligent practice (Ātāpa), he became skilled in both Samatha (calm meditation) and Vipassanā (insight meditation), trusted to guide practitioners across Myanmar and international centres.</p>
           <div class="pcard__bar"></div>
           <div class="ccard__tags" style="margin-top:16px;">
-            <span class="ctag ctag--free">Over 10 years</span>
+            <span class="ctag ctag--free">Samatha &amp; Vipassanā</span>
           </div>
         </div>
 
         <div class="pcard reveal-card" data-d="240">
           <div class="pcard__icon">
-            <div class="sun-icon-simple"></div>
+            <div class="sun-icon-simple sun-mascot--svg">
+              <svg class="sun-svg" viewBox="0 0 100 100"><use href="#full-sun-symbol"/></svg>
+            </div>
           </div>
-          <h3 class="ccard__title">Paṭivedha · Sharing<br/><small>With a Smile, Always</small></h3>
-          <p>Since his early forties, freely offering the Dhamma internationally — retreats, Q&A sessions, public talks — always with patience, always with love, never turning a sincere question away.</p>
+          <h3 class="ccard__title">Kalyāṇa-mitta · Spiritual Guide<br/><small>Pa-Auk International, Thailand</small></h3>
+          <p>At present, he is teaching meditation at Pa-Auk International Meditation Center in Angthong, Thailand. He continues to guide practitioners in the Pa-Auk tradition, focusing on Sīla (morality), Samādhi (concentration), and Paññā (wisdom). His presence is a valuable blessing, helping practitioners walk on the Noble Path (Ariya-magga) toward the end of suffering (Dukkha-nirodha).</p>
           <div class="pcard__bar"></div>
           <div class="ccard__tags" style="margin-top:16px;">
-            <span class="ctag ctag--free">Ongoing, freely given</span>
+            <span class="ctag ctag--free">Angthong, Thailand · Global Sangha</span>
           </div>
         </div>
 
@@ -217,31 +233,31 @@
 
       <div class="heaven-stats reveal-fade" data-d="0">
         <div class="hstat">
-          <span class="hstat__num" data-target="40">0</span>
-          <span class="hstat__label">Years in the Dhamma</span>
+          <span class="hstat__num" data-target="1976">0</span>
+          <span class="hstat__label">Birth Year in Myanmar</span>
         </div>
         <div class="hstat__div">☸</div>
         <div class="hstat">
-          <span class="hstat__num" data-target="6">0</span>
-          <span class="hstat__label">Countries taught in</span>
+          <span class="hstat__num" data-target="1998">0</span>
+          <span class="hstat__label">Upasampadā Ordination</span>
         </div>
         <div class="hstat__div">☸</div>
         <div class="hstat">
-          <span class="hstat__num" data-target="9">0</span>
-          <span class="hstat__label">Specializations offered</span>
+          <span class="hstat__num" data-target="28">0</span>
+          <span class="hstat__label">Years of Monastic Vassa</span>
         </div>
         <div class="hstat__div">☸</div>
         <div class="hstat">
           <span class="hstat__num" data-target="100">0</span>
-          <span class="hstat__label">% freely given, always</span>
+          <span class="hstat__label">% Dāna · Freely Offered</span>
         </div>
       </div>
 
       <div class="about-cards reveal-fade" data-d="0">
-        <div class="acard"><div class="acard-icon">📖</div><h4>Pāli Scholar</h4><p>Deep mastery of the Tipiṭaka, Abhidhamma, and the Theravāda commentarial tradition.</p></div>
-        <div class="acard"><div class="acard-icon">🧘</div><h4>Meditation Guide</h4><p>Over 20 years guiding yogis through samatha and vipassanā, in retreat and in daily life.</p></div>
-        <div class="acard"><div class="acard-icon">🌏</div><h4>Global Presence</h4><p>Teachings across Myanmar, Thailand, Sri Lanka, Vietnam, Malaysia, Europe & the USA.</p></div>
-        <div class="acard"><div class="acard-icon">🤝</div><h4>Open Door</h4><p>Known for his easy laughter and patience to explain the same teaching ten different ways.</p></div>
+        <div class="acard"><div class="acard-icon">📖</div><h4>Dhammācariya</h4><p>Awarded Sāsana Dhaja Dhammācariya for deep study of the Tipiṭaka and Pāḷi Canon.</p></div>
+        <div class="acard"><div class="acard-icon">🧘</div><h4>Pa-Auk Master</h4><p>Trained directly under Most Ven. Pa-Auk Sayadaw, proficient in Samatha and Vipassanā.</p></div>
+        <div class="acard"><div class="acard-icon">🏛️</div><h4>Viniccaya Member</h4><p>Former lecturer at Mani Ratanabon Monastery and judicial Viniccaya member in Sagaing.</p></div>
+        <div class="acard"><div class="acard-icon">🪷</div><h4>Spiritual Friend</h4><p>Guiding meditators at Pa-Auk Center in Angthong, Thailand, and online weekly via Zoom.</p></div>
       </div>
 
     </div>
@@ -258,7 +274,7 @@
 
         <div class="how__step reveal-fade" data-d="0">
           <div class="step-num">I</div>
-          <div class="step-sun"><div class="sun-mascot sun-mascot--step"><div class="sm-face"><div class="sm-eye sm-eye--l"></div><div class="sm-eye sm-eye--r"></div><div class="sm-smile"></div><div class="sm-blush sm-blush--l"></div><div class="sm-blush sm-blush--r"></div></div></div></div>
+          <div class="step-sun"><div class="sun-mascot sun-mascot--step sun-mascot--svg"><svg class="sun-svg" viewBox="0 0 100 100"><use href="#full-sun-symbol"/></svg></div></div>
           <h3>Sīla — Virtue & Ethics</h3>
           <p>The cool, stable ground beneath every step of the path. Right speech, right action, right livelihood — not burdens to carry, but gifts we offer to every being whose life ours touches. Sayadaw teaches precepts as acts of love, not restriction.</p>
         </div>
@@ -270,7 +286,7 @@
 
         <div class="how__step reveal-fade" data-d="120">
           <div class="step-num">II</div>
-          <div class="step-sun"><div class="sun-mascot sun-mascot--step"><div class="sm-face"><div class="sm-eye sm-eye--l"></div><div class="sm-eye sm-eye--r"></div><div class="sm-smile"></div><div class="sm-blush sm-blush--l"></div><div class="sm-blush sm-blush--r"></div></div></div></div>
+          <div class="step-sun"><div class="sun-mascot sun-mascot--step sun-mascot--svg"><svg class="sun-svg" viewBox="0 0 100 100"><use href="#full-sun-symbol"/></svg></div></div>
           <h3>Samādhi — Stillness of Mind</h3>
           <p>The clear lamp that lights the way. Through samatha — breath, nimitta, jhāna — the mind grows luminously still, unified, and capable of the sustained clarity that insight requires. The Paauk system cultivates this with extraordinary depth and care.</p>
         </div>
@@ -282,7 +298,7 @@
 
         <div class="how__step reveal-fade" data-d="240">
           <div class="step-num">III</div>
-          <div class="step-sun"><div class="sun-mascot sun-mascot--step"><div class="sm-face"><div class="sm-eye sm-eye--l"></div><div class="sm-eye sm-eye--r"></div><div class="sm-smile"></div><div class="sm-blush sm-blush--l"></div><div class="sm-blush sm-blush--r"></div></div></div></div>
+          <div class="step-sun"><div class="sun-mascot sun-mascot--step sun-mascot--svg"><svg class="sun-svg" viewBox="0 0 100 100"><use href="#full-sun-symbol"/></svg></div></div>
           <h3>Paññā — Liberating Wisdom</h3>
           <p>The sunrise that ends the long night. Vipassanā insight — seeing impermanence, suffering, and not-self directly in one's own experience — gradually loosens the grip of craving until there is simply nothing left to hold.</p>
         </div>
@@ -300,15 +316,8 @@
 
       <div class="metta-orb-wrap reveal-fade" data-d="0">
         <div class="metta-orb">
-          <div class="sun-mascot sun-mascot--orb">
-            <div class="sm-face">
-              <div class="sm-eye sm-eye--l"></div>
-              <div class="sm-eye sm-eye--r"></div>
-              <div class="sm-smile"></div>
-              <div class="sm-blush sm-blush--l"></div>
-              <div class="sm-blush sm-blush--r"></div>
-            </div>
-            <div class="sm-halo"></div>
+          <div class="sun-mascot sun-mascot--orb sun-mascot--svg">
+            <svg class="sun-svg" viewBox="0 0 100 100"><use href="#full-sun-symbol"/></svg>
           </div>
         </div>
         <div class="metta-lines">
@@ -532,72 +541,107 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════ DHAMMA TALKS ══════════════════════════════ -->
-  <section class="voices" id="talks">
+  <!-- ══════════════════════════ ONLINE CLASS & DHAMMA TALKS ══════════════ -->
+  <section class="voices" id="online-class">
+    <div id="talks"></div>
     <div class="container">
-      <div class="eyebrow">Listen</div>
-      <h2 class="section-title">Dhamma Talks<br/><span class="grad-text">Offered Freely.</span></h2>
-      <p class="section-body">Teachings in English, Burmese, and Vietnamese — offered to anyone who wishes to listen. The Dhamma has no price.</p>
-    </div>
+      <div class="eyebrow">Online Dhamma Class · Weekly Live Sessions</div>
+      <h2 class="section-title">
+        The Path of Practice<br/>
+        <span class="grad-text">According to the Buddha's Words</span>
+      </h2>
+      <p class="section-body">
+        Directly taught by Venerable Ashin Suvanna (Suvaṇṇa Sayadaw) · Live on Zoom every Saturday from 19:30 to 21:00 (GMT+7).
+        All teachings and meditation guidance are offered freely on a Dāna basis to all sincere practitioners worldwide.
+      </p>
 
-    <div class="talks-grid container">
-      <a href="https://www.youtube.com" target="_blank" rel="noopener" class="talk-card">
-        <div class="talk-card__glow"></div>
-        <div class="talk-platform">▶ YouTube</div>
-        <h4>Dhamma Talks Channel</h4>
-        <p>Talks on meditation, Abhidhamma, the 37 Factors of Enlightenment, and open Q&A with students from around the world.</p>
-        <span class="talk-arrow">Watch the talks →</span>
-      </a>
-      <a href="https://www.facebook.com" target="_blank" rel="noopener" class="talk-card">
-        <div class="talk-card__glow"></div>
-        <div class="talk-platform">📘 Facebook Live</div>
-        <h4>Weekly Live Sessions</h4>
-        <p>Every Sunday — live guided meditation followed by open Q&A. No registration required. Arrive and sit.</p>
-        <span class="talk-arrow">Join on Sunday →</span>
-      </a>
-      <a href="#" class="talk-card">
-        <div class="talk-card__glow"></div>
-        <div class="talk-platform">🎙 Podcast</div>
-        <h4>Dhamma Reflections</h4>
-        <p>Short ten to fifteen minute reflections for daily practice — a moment of quiet in a busy day, offered with love.</p>
-        <span class="talk-arrow">Listen now →</span>
-      </a>
-      <a href="#" class="talk-card">
-        <div class="talk-card__glow"></div>
-        <div class="talk-platform">📝 Transcripts</div>
-        <h4>Written Teachings</h4>
-        <p>Selected talks transcribed and gently edited — for those who prefer to read slowly and return many times.</p>
-        <span class="talk-arrow">Read the words →</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════ RETREAT CALENDAR ══════════════════════════ -->
-  <!-- <section class="merit" id="retreats">
-    <div class="container">
-      <div class="eyebrow">Coming Up</div>
-      <h2 class="section-title">Retreat Calendar<br/><span class="grad-text">Every Yogi Welcome.</span></h2>
-      <p class="section-body">All retreats are offered freely or on a dāna basis. No experience is too little. No question is too small.</p>
-
-      <div class="retreat-list">
-        <div class="retreat-item reveal-fade" data-d="0">
-          <div class="retreat-date"><div class="rmonth">Aug</div><div class="rday">12</div><div class="ryear">2026</div></div>
-          <div class="retreat-info"><h4>7-Day Samatha Retreat · Kuala Lumpur</h4><p>Concentration in breath meditation and jhāna development. For practitioners with some prior sitting experience.</p></div>
-          <span class="retreat-tag">7 Days</span>
+      <!-- Featured Course Highlight Card -->
+      <div class="topic-card topic-card--featured class-hero-card reveal-card" data-d="0" style="--topic-color:#f0cc60;--topic-glow:rgba(240,204,96,0.25)">
+        <div class="topic-eyebrow-row">
+          <span class="topic-tag topic-tag--featured">Weekly Online Class · Live on Zoom</span>
         </div>
-        <div class="retreat-item reveal-fade" data-d="100">
-          <div class="retreat-date"><div class="rmonth">Sep</div><div class="rday">20</div><div class="ryear">2026</div></div>
-          <div class="retreat-info"><h4>Weekend Mettā Retreat · Ho Chi Minh City</h4><p>Loving-kindness meditation and the four Brahmavihāras. Open to all — beginners especially welcome.</p></div>
-          <span class="retreat-tag">Weekend</span>
-        </div>
-        <div class="retreat-item reveal-fade" data-d="200">
-          <div class="retreat-date"><div class="rmonth">Nov</div><div class="rday">01</div><div class="ryear">2026</div></div>
-          <div class="retreat-info"><h4>10-Day Vipassanā Retreat · Paauk Tawya Centre</h4><p>The full Paauk method in Myanmar. Prior samatha experience required. A rare and precious opportunity.</p></div>
-          <span class="retreat-tag">10 Days</span>
+        <div class="topic-inner">
+          <div class="topic-icon-wrap topic-icon-wrap--lg">🪷</div>
+          <div class="topic-body">
+            <h3 class="topic-title">“The Path of Practice According to the Buddha's Words”</h3>
+            <p class="topic-pali">Directly taught by Suvaṇṇa Sayadaw</p>
+            
+            <div class="zoom-meta-bar">
+              <span class="zoom-badge zoom-badge--gold">📅 Saturdays 19:30 – 21:00 (GMT+7)</span>
+              <span class="zoom-badge zoom-badge--sky">💻 Zoom Meeting ID: 517 109 7038</span>
+              <span class="zoom-badge">🔑 Passcode: 123456</span>
+            </div>
+
+            <p class="topic-desc">Explore and cultivate the step-by-step path of authentic early Buddhist practice:</p>
+            
+            <div class="topic-points topic-points--grid">
+              <div class="topic-point"><strong>Cultivating Right View (Sammā-diṭṭhi)</strong> — Establishing accurate understanding of mind, body, and all conditioned phenomena according to Dhamma</div>
+              <div class="topic-point"><strong>Recognizing Greed, Hatred, Delusion &amp; Defilements</strong> — Clearly perceiving the unwholesome states binding the heart and discerning their roots</div>
+              <div class="topic-point"><strong>Bringing the Dhamma into Daily Life</strong> — Concrete application of Buddhist teachings in everyday speech, action, and mindfulness</div>
+              <div class="topic-point"><strong>Practicing with Correct Method</strong> — Mastering systematic Samatha (calm) and Vipassanā (insight) in the revered Pa-Auk tradition</div>
+              <div class="topic-point" style="grid-column: 1 / -1;"><strong>Gradually Cultivating Faith, Virtue, Stillness &amp; Wisdom</strong> — Steadfast progress on the Noble Path toward the cessation of suffering (Dukkha-nirodha)</div>
+            </div>
+
+            <div class="zoom-highlight-box">
+              <strong>💡 NOT JUST A LECTURE — INTERACTIVE Q&amp;A</strong><br/>
+              You are warmly invited to submit questions and share real meditation challenges to receive direct personal guidance, clarification, and encouragement from Sayadaw Suvanna.
+            </div>
+
+            <p class="topic-desc topic-desc--footnote" style="margin-top:14px;">
+              🙏 If you wish to understand rightly, practice rightly, and live with the Dhamma — you are warmly welcome to join.<br/>
+              🤝 Please share this opportunity with fellow seekers on the spiritual path.<br/>
+              🌿 <em>LEARN TOGETHER · PRACTICE TOGETHER · STRIVE WITH DILIGENCE TOGETHER. Sādhu! Sādhu! Sādhu! 🙏</em>
+            </p>
+
+            <div class="class-actions">
+              <a href="https://us06web.zoom.us/j/5171097038" target="_blank" rel="noopener" class="btn btn--sky">
+                <span>Join Live Zoom Class</span>
+                <span class="btn__lotus">💻</span>
+              </a>
+              <a href="https://forms.gle/LC4kFqDD672Bkq3J6" target="_blank" rel="noopener" class="btn btn--ghost">
+                <span>❓ Submit Question for Sayadaw</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </section> -->
+
+    <!-- 4 Action Cards -->
+    <div class="talks-grid container">
+      <a href="https://us06web.zoom.us/j/5171097038" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-card__glow"></div>
+        <div class="talk-platform">💻 Live on Zoom</div>
+        <h4>Join Weekly Zoom Class</h4>
+        <p><strong>Meeting ID:</strong> 517 109 7038<br/><strong>Passcode:</strong> 123456<br/>Live every Saturday at 19:30 – 21:00 (GMT+7). Free and open to all.</p>
+        <span class="talk-arrow">Join Zoom Meeting →</span>
+      </a>
+
+      <a href="https://forms.gle/LC4kFqDD672Bkq3J6" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-card__glow"></div>
+        <div class="talk-platform">❓ Dhamma Q&amp;A Form</div>
+        <h4>Ask Sayadaw Suvanna</h4>
+        <p>Submit questions and share meditation hurdles directly with Sayadaw for his personal instructions and insight.</p>
+        <span class="talk-arrow">Fill Question Form →</span>
+      </a>
+
+      <a href="https://youtube.com/@vietnamyeukinhphap" target="_blank" rel="noopener" class="talk-card">
+        <div class="talk-card__glow"></div>
+        <div class="talk-platform">📺 YouTube Channel</div>
+        <h4>Channel @vietnamyeukinhphap</h4>
+        <p>Watch live streams and access the complete audio-visual library of Sayadaw Suvanna's talks and teachings.</p>
+        <span class="talk-arrow">Watch on YouTube →</span>
+      </a>
+
+      <a href="dhamma/index.html" class="talk-card">
+        <div class="talk-card__glow"></div>
+        <div class="talk-platform">📖 Visual Curriculum</div>
+        <h4>Visual Dhamma Slides</h4>
+        <p>Study Dependent Origination (Paṭicca-samuppāda) and the 32 Parts of the Body (Asubha) through visual diagrams.</p>
+        <span class="talk-arrow">Open Visual Teachings →</span>
+      </a>
+    </div>
+  </section>
 
   <!-- ══════════════════════════ QUOTES / "VOICES" ═════════════════════════ -->
   <section class="voices" id="quotes">
@@ -680,13 +724,6 @@
     </div>
     <div class="cta-sun-scene">
       <div class="cta-sun">
-        <div class="sm-face cta-sm-face">
-          <div class="sm-eye sm-eye--l"></div>
-          <div class="sm-eye sm-eye--r"></div>
-          <div class="sm-smile"></div>
-          <div class="sm-blush sm-blush--l"></div>
-          <div class="sm-blush sm-blush--r"></div>
-        </div>
         <div class="cta-sun__ring cr1"></div>
         <div class="cta-sun__ring cr2"></div>
         <div class="cta-sun__ring cr3"></div>
@@ -702,10 +739,10 @@
       </h2>
       <p class="section-body">Sayadaw Suvanna welcomes every question, from every tradition, from every stage of the path. Whether you have never meditated before or have been sitting for decades — you are warmly, wholeheartedly invited to reach out.</p>
       <div class="cta-links">
-        <a href="https://www.youtube.com" target="_blank" rel="noopener" class="contact-link">▶ YouTube</a>
-        <a href="https://www.facebook.com" target="_blank" rel="noopener" class="contact-link">📘 Facebook</a>
-        <a href="https://github.com/rex-9/vensuvanna" target="_blank" rel="noopener" class="contact-link">🐙 GitHub</a>
-        <a href="dhamma/index.html" class="contact-link">📖 Teachings</a>
+        <a href="https://us06web.zoom.us/j/5171097038" target="_blank" rel="noopener" class="contact-link">💻 Join Zoom Class</a>
+        <a href="https://forms.gle/LC4kFqDD672Bkq3J6" target="_blank" rel="noopener" class="contact-link">❓ Submit Q&amp;A Question</a>
+        <a href="https://youtube.com/@vietnamyeukinhphap" target="_blank" rel="noopener" class="contact-link">📺 YouTube Channel</a>
+        <a href="dhamma/index.html" class="contact-link">📖 Visual Dhamma</a>
       </div>
       <p class="cta-whisper">Sabbe Sattā Sukhitā Hontu · May All Beings Be Happy</p>
     </div>
@@ -715,19 +752,39 @@
   <footer class="footer">
     <div class="footer__top">
       <div class="footer__brand">
-        <div class="sun-mascot sun-mascot--footer">
-          <div class="sm-face"><div class="sm-eye sm-eye--l"></div><div class="sm-eye sm-eye--r"></div><div class="sm-smile"></div><div class="sm-blush sm-blush--l"></div><div class="sm-blush sm-blush--r"></div></div>
-          <div class="sm-halo"></div>
+        <div class="sun-mascot sun-mascot--footer sun-mascot--svg">
+          <svg class="sun-svg" viewBox="0 0 100 100" width="100%" height="100%" aria-label="Radiant Golden Sun">
+            <defs>
+              <radialGradient id="sunGradFooter" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#FFFFFF" />
+                <stop offset="25%" stop-color="#FFF8D0" />
+                <stop offset="55%" stop-color="#FFD23F" />
+                <stop offset="85%" stop-color="#F59E0B" />
+                <stop offset="100%" stop-color="#E08700" />
+              </radialGradient>
+            </defs>
+            <g class="sun-svg-rays" stroke="#FFD23F" stroke-width="3.5" stroke-linecap="round" opacity="0.95">
+              <line x1="50" y1="5" x2="50" y2="17" />
+              <line x1="50" y1="83" x2="50" y2="95" />
+              <line x1="5" y1="50" x2="17" y2="50" />
+              <line x1="83" y1="50" x2="95" y2="50" />
+              <line x1="18" y1="18" x2="27" y2="27" />
+              <line x1="73" y1="73" x2="82" y2="82" />
+              <line x1="82" y1="18" x2="73" y2="27" />
+              <line x1="27" y1="73" x2="18" y2="82" />
+            </g>
+            <circle cx="50" cy="50" r="28" fill="url(#sunGradFooter)" />
+            <circle cx="50" cy="50" r="28" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+          </svg>
         </div>
-        <span class="footer__name">Ven. Suvanna</span>
-        <p class="footer__sub">Paauk Tawya · Theravāda Tradition</p>
+        <span class="footer__name">Ven. Ashin Suvanna</span>
+        <p class="footer__sub">Pa-Auk Tawya · Theravāda Tradition</p>
         <p class="footer__dhamma">"As sunlight falls on every cloud without choosing — may the merit of practice reach all beings."</p>
       </div>
       <div class="footer__nav">
         <div class="fcol">
           <h4>Practice</h4>
           <a href="#specializations">Specializations</a>
-          <a href="#journey">His Journey</a>
           <a href="#threefold">The Three Trainings</a>
           <a href="dhamma/index.html">Visual Teachings</a>
         </div>
@@ -740,24 +797,25 @@
         </div>
         <div class="fcol">
           <h4>Connect</h4>
-          <a href="#talks">Dhamma Talks</a>
-          <a href="#retreats">Retreat Calendar</a>
-          <a href="#contact">Ask a Question</a>
-          <a href="#quotes">Words of Dhamma</a>
+          <a href="#online-class">Online Class (Zoom)</a>
+          <a href="https://forms.gle/LC4kFqDD672Bkq3J6" target="_blank" rel="noopener">Submit Questions to Sayadaw</a>
+          <a href="https://youtube.com/@vietnamyeukinhphap" target="_blank" rel="noopener">YouTube (@vietnamyeukinhphap)</a>
+          <a href="#quotes">Sayadaw's Dhamma Words</a>
         </div>
         <div class="fcol">
           <h4>About</h4>
-          <a href="#about">His Story</a>
-          <a href="#metta">Loving-Kindness</a>
+          <a href="#about">Life &amp; Biography</a>
+          <a href="#metta">Loving-Kindness (Mettā)</a>
           <a href="https://github.com/rex-9/vensuvanna" target="_blank" rel="noopener">GitHub</a>
         </div>
       </div>
     </div>
     <div class="footer__bottom">
-      <p>© 2026 Ven. Sayadaw Suvanna · Paauk Tawya Tradition. All merit offered to all beings, everywhere.</p>
+      <p>© 2026 Ven. Ashin Suvanna (Suvaṇṇa Sayadaw) · Pa-Auk Tawya Tradition. All merit offered to all beings, everywhere.</p>
       <div class="footer__app-links">
-        <a href="https://www.youtube.com" target="_blank">YouTube</a>
-        <a href="https://www.facebook.com" target="_blank">Facebook</a>
+        <a href="https://youtube.com/@vietnamyeukinhphap" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://us06web.zoom.us/j/5171097038" target="_blank" rel="noopener">Zoom Class</a>
+        <a href="https://forms.gle/LC4kFqDD672Bkq3J6" target="_blank" rel="noopener">Q&amp;A Form</a>
       </div>
     </div>
   </footer>
